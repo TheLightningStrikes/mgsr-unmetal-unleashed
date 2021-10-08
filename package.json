@@ -1,11 +1,12 @@
 {
-  "name": "mgsr-unleashed",
+  "name": "mgsr-unmetal-unleashed",
   "version": "1.0.0",
   "description": "Dashboard panel and graphics for entering stats with NodeCG",
   "homepage": "a github page lol",
   "author": "TheLightningStrikes",
   "dependencies": {
-    "obs-websocket-js": "^4.0.3"
+    "obs-websocket-js": "^4.0.3",
+    "nodecg": "^1.8.1"
   },
   "nodecg": {
     "compatibleRange": "^1.0.0",
