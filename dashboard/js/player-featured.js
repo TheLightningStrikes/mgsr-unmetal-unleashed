@@ -4,8 +4,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const runDataReplicant = nodecg.Replicant('runDataActiveRun', 'nodecg-speedcontrol');
     const mediaSourcesReplicant = nodecg.Replicant("obs-media-sources");
 
-    const playerSelectionWrapper = document.getElementById("player-selection-wrapper");
-    const sourceSelectionWrapper = document.getElementById(`media-source-selection-wrapper-featured`);
+    const playerSelection = document.getElementById("player-selection-featured");
+    const sourceSelection = document.getElementById(`media-source-selection-featured`);
 
     const RTMPRegion = document.getElementById("rtmp-region");
     const RTMPKey = document.getElementById("rtmp-key");
@@ -16,17 +16,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
     AFK.onclick = function() {onCheckboxClick("afk", AFK.checked)};
     openSlot.onclick = function() {onCheckboxClick("open-slot", openSlot.checked)};
 
-    let connected = false;
-
     const server = 'server';
     const web = 'web';
 
     initializeValues();
     function initializeValues() {
         nodecg.listenFor(`${web}-media-sources`, (data) => {
-            sourceSelectionWrapper.innerHTML = "";
-            sourceSelectionWrapper.append(createMediaSourceSelection("media-source-selection-featured", mediaSourcesReplicant.value.mediaSources));
-            document.getElementById(`media-source-selection-featured`).value = playerFeaturedReplicant.value.sourceName;
+            sourceSelection.innerHTML = "";
+            const options = createMediaSourceSelection(data.mediaSources);
+            for (let i = 0; i < options.length; i++) {
+                sourceSelection.append(options[i]);
+            }
             updateReplicant();
         });
 
@@ -57,18 +57,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
-        nodecg.listenFor(`${server}-media-sources`, (data) => {
-            sourceSelectionWrapper.innerHTML = "";
-            sourceSelectionWrapper.append(createMediaSourceSelection("media-source-selection-featured", data.mediaSources));
-        });
-
         NodeCG.waitForReplicants(playerFeaturedReplicant, runDataReplicant, RTMPFeaturedPlayerReplicant, mediaSourcesReplicant).then(() => {
-            playerSelectionWrapper.append(createPlayerSelection("featured", runDataReplicant.value.teams));
-            document.getElementById("player-selection-featured").value = playerFeaturedReplicant.value.playerSelected;
-
-            sourceSelectionWrapper.innerHTML = "";
-            sourceSelectionWrapper.append(createMediaSourceSelection("media-source-selection-featured", mediaSourcesReplicant.value.mediaSources));
-            document.getElementById(`media-source-selection-featured`).value = playerFeaturedReplicant.value.sourceName;
+            if(runDataReplicant.value !== undefined) {
+                const options = createPlayerSelection(runDataReplicant.value.teams);
+                for (let i = 0; i < options.length; i++) {
+                    playerSelection.append(options[i]);
+                }
+            }
+            if(mediaSourcesReplicant.value !== undefined) {
+                const options = createMediaSourceSelection(mediaSourcesReplicant.value.mediaSources);
+                for (let i = 0; i < options.length; i++) {
+                    sourceSelection.append(options[i]);
+                }
+            }
 
             if (playerFeaturedReplicant.value.rtmp.region !== undefined) {
                 RTMPRegion.value = playerFeaturedReplicant.value.rtmp.region;
@@ -85,11 +86,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
             AFK.checked = playerFeaturedReplicant.value.afk;
             openSlot.checked = playerFeaturedReplicant.value.openSlot;
 
+            //TODO: change repository name
             runDataReplicant.on("change", (newValue) => {
                 if (newValue) {
-                    playerSelectionWrapper.innerHTML = "";
-                    playerSelectionWrapper.append(createPlayerSelection("featured", newValue.teams));
+                    playerSelection.innerHTML = "";
+                    const options = createPlayerSelection(newValue.teams);
+                    for (let i = 0; i < options.length; i++) {
+                        playerSelection.append(options[i]);
+                    }
                 }
+                updateReplicant();
             });
         });
     }
@@ -138,47 +144,35 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
-    function createMediaSourceSelection(id, data) {
-        const label = document.createElement("label");
-        label.setAttribute("for", id)
-        label.innerHTML = "OBS Media Source"
-        const select = document.createElement("select");
-        select.setAttribute("class", "small-player-select");
-        select.setAttribute("id", id);
-        select.setAttribute("name", id)
+    function createMediaSourceSelection(data) {
+        const options = [];
         let i = 0;
         for (let dataID in data) {
             const option = document.createElement("option");
             const sourceName = data[dataID].sourceName;
             option.value = sourceName;
             option.innerHTML = sourceName;
-            if (playerFeaturedReplicant.value.sourceName === sourceName || id === "featured") {
+            if (playerFeaturedReplicant.value.sourceName === sourceName) {
                 option.selected = true;
             }
             i++
-            select.append(option);
+            options.push(option);
         }
-        if (i === 0) {
-            select.disabled = true;
-        }
-        label.append(select);
-        return label;
+        return options;
     }
 
-    function createPlayerSelection(id, teamsInSpeedcontrol) {
-        const select = document.createElement("select");
-        select.setAttribute("class", "small-player-select");
-        select.setAttribute("id", `player-selection-${id}`);
+    function createPlayerSelection(teamsInSpeedcontrol) {
+        const options = [];
         for (let i = 0; i < teamsInSpeedcontrol.length; i++) {
             const option = document.createElement("option");
-            const player = teamsInSpeedcontrol[i].players[0];
-            option.value = player.name;
-            option.innerHTML = player.name;
-            if (id === 0) {
+            const playerName = teamsInSpeedcontrol[i].players[0].name;
+            option.value = playerName;
+            option.innerHTML = playerName;
+            if (playerName === playerFeaturedReplicant.value.playerSelected) {
                 option.selected = true;
             }
-            select.appendChild(option);
+            options.push(option);
         }
-        return select;
+        return options;
     }
 });

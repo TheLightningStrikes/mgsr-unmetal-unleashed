@@ -9,13 +9,14 @@
 <body>
     <form id="featured-form">
         <h3>Featured Player</h3>
-        <div id="player-selection-wrapper"></div>
-        <div id="media-source-selection-wrapper-featured">
-            <label for="media-source-selection-featured" >OBS Media Source
-                <select name="media-source-selection-featured" id="media-source-selection-featured" disabled>
-                </select>
-            </label>
-        </div>
+        <label for="player-selection-featured">Runner
+            <select name="player-selection-featured" class="small-player-select" id="player-selection-featured">
+            </select>
+        </label>
+        <label for="media-source-selection-featured">OBS Media Source
+            <select name="media-source-selection-featured" class="small-player-select" id="media-source-selection-featured" disabled>
+            </select>
+        </label>
         <label class="rtmp" for="rtmp-region">RTMP Region
             <select name="rtmp-region" id="rtmp-region">
                 <option value="NA">NA</option>
@@ -27,8 +28,9 @@
         <label class="rtmp" for="rtmp-key">RTMP Key
             <input type="text" id="rtmp-key" name="rtmp-key" placeholder="Key">
         </label>
-        <label for="current-pb">Current PB</label>
-        <input type="text" id="current-pb" name="current-pb" placeholder="PB time">
+        <label for="current-pb">Current PB
+            <input type="text" id="current-pb" name="current-pb" placeholder="PB time">
+        </label>
         <label for="afk">
             <input type="checkbox" id="afk" name="afk">
             AFK

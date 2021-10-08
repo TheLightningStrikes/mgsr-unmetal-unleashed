@@ -38,7 +38,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 for (let id in options) {
                     sourceSelection.append(options[id])
                 }
-                sourceSelection.value = smallPlayerSettingsReplicant.value[i].sourceName;
             }
             updateReplicant();
         });
@@ -88,17 +87,18 @@ window.addEventListener('DOMContentLoaded', () => {
             currentAmountOfPlayers = Object.keys(smallPlayerSettingsReplicant.value).length;
             createPlayers(currentAmountOfPlayers);
             for (let id in smallPlayerSettingsReplicant.value) {
+                console.log(smallPlayerSettingsReplicant.value[id].playerSelected);
                 const smallPlayerData = smallPlayerSettingsReplicant.value[id];
                 const playerID = smallPlayerData.id;
 
                 document.getElementById(`player-selection-${playerID}`).value = smallPlayerData.playerSelected;
 
-                document.getElementById(`media-source-selection-${playerID}`).value = smallPlayerSettingsReplicant.value[id].sourceName;
+                document.getElementById(`media-source-selection-${playerID}`).value = smallPlayerData.sourceName;
 
-                document.getElementById(`rtmp-region-${playerID}`).value = smallPlayerSettingsReplicant.value[id].rtmp.region;
+                document.getElementById(`rtmp-region-${playerID}`).value = smallPlayerData.rtmp.region;
 
-                if(smallPlayerSettingsReplicant.value[id].rtmp.key !== undefined) {
-                    document.getElementById(`rtmp-key-${playerID}`).value = smallPlayerSettingsReplicant.value[id].rtmp.key;
+                if(smallPlayerData.rtmp.key !== undefined) {
+                    document.getElementById(`rtmp-key-${playerID}`).value = smallPlayerData.rtmp.key;
                 }
 
                 if(smallPlayerData.currentPB !== undefined) {
@@ -110,13 +110,16 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             runDataReplicant.on("change", (newValue) => {
-                if (newValue) {
+                if (newValue !== undefined) {
                     for (let i = 0; i < currentAmountOfPlayers; i++) {
                         const id = i+1;
 
-                        const playerSelectionWrapper = document.getElementById(`player-selection-wrapper-${id}`);
-                        playerSelectionWrapper.innerHTML = "";
-                        playerSelectionWrapper.append(createPlayerSelection(id, newValue.teams));
+                        const playerSelection = document.getElementById(`player-selection-${id}`);
+                        playerSelection.innerHTML = "";
+                        const options = createPlayerSelectOptions(id, newValue.teams);
+                        for (let id in options) {
+                            playerSelection.append(options[id])
+                        }
                     }
                 }
             });
@@ -132,12 +135,6 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById(`afk-${id}`).checked = values.afk;
         document.getElementById(`open-slot-${id}`).checked = values.openSlot;
         updateReplicant();
-    }
-
-    function createWrapper(id) {
-        const wrapper = document.createElement("div");
-        wrapper.setAttribute("id", id);
-        return wrapper;
     }
 
     function createSelectInput(id) {
@@ -159,6 +156,21 @@ window.addEventListener('DOMContentLoaded', () => {
                 option.selected = true;
             }
 
+            options.push(option);
+        }
+        return options;
+    }
+
+    function createPlayerSelectOptions(id, data) {
+        const options = [];
+        for (let dataID in data) {
+            const option = document.createElement("option");
+            const player = data[dataID].players[0];
+            option.value = player.name;
+            option.innerHTML = player.name;
+            if(smallPlayerSettingsReplicant.value[id-1] !== undefined && player.name === smallPlayerSettingsReplicant.value[id-1].playerSelected) {
+                option.selected = true;
+            }
             options.push(option);
         }
         return options;
@@ -195,6 +207,7 @@ window.addEventListener('DOMContentLoaded', () => {
     function updateReplicant() {
         const data = {};
         const rtmp = {};
+        console.log("called");
 
         for (let i = 0; i < currentAmountOfPlayers; i++) {
             const id = i+1;
@@ -226,28 +239,6 @@ window.addEventListener('DOMContentLoaded', () => {
         updateReplicant();
     }
 
-    function createPlayerSelection(id, teamsInSpeedcontrol) {
-        const wrapper = document.createElement("div");
-        wrapper.setAttribute("id", `player-selection-wrapper-${id}`);
-
-        const select = document.createElement("select");
-        select.setAttribute("class", "small-player-select");
-        select.setAttribute("id", `player-selection-${id}`);
-        for (let i = 0; i < teamsInSpeedcontrol.length; i++) {
-            const option = document.createElement("option");
-            const player = teamsInSpeedcontrol[i].players[0];
-            option.value = player.name;
-            option.innerHTML = player.name;
-            if (id === i) {
-                option.selected = true;
-            }
-            select.appendChild(option);
-        }
-
-        wrapper.append(select);
-        return wrapper;
-    }
-
     function createSmallPlayer(id) {
         const smallPlayerWrapper = document.createElement("div");
         smallPlayerWrapper.setAttribute("id", `small-player-${id}`);
@@ -255,11 +246,32 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const playerHeader = createHeader(`Player ${id}`)
 
-        const playerSelection = createPlayerSelection(id, runDataReplicant.value.teams);
+        const playerSelectionLabel = (createLabel(`player-selection-${id}`, "Runner"));
+        const playerSelectionInput = createSelectInput(`player-selection-${id}`);
+        let playerSelectionOptions;
+
+        if (runDataReplicant.value !== undefined) {
+            playerSelectionOptions = (createPlayerSelectOptions(id, runDataReplicant.value.teams));
+        }
+        else {
+            playerSelectionOptions = [];
+        }
+
+        for (let id in playerSelectionOptions) {
+            playerSelectionInput.appendChild(playerSelectionOptions[id]);
+        }
 
         const sourceSelectionLabel = (createLabel(`media-source-selection-${id}`, "OBS Media Source"));
         const sourceSelectionInput = createSelectInput(`media-source-selection-${id}`);
-        const sourceSelectionOptions = (createMediaSourceOptions(id, mediaSourcesReplicant.value.mediaSources))
+        let sourceSelectionOptions;
+
+        if (runDataReplicant.value !== undefined) {
+            sourceSelectionOptions = (createMediaSourceOptions(id, mediaSourcesReplicant.value.mediaSources));
+        }
+        else {
+            sourceSelectionOptions = [];
+        }
+
         for (let id in sourceSelectionOptions) {
             sourceSelectionInput.appendChild(sourceSelectionOptions[id]);
         }
@@ -276,7 +288,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const openSlotCheckboxInput = createCheckbox(`open-slot-${id}`, `open-slot-${id}`);
         const openSlotCheckboxLabel = createLabelWithCheckbox(`open-slot-${id}`, openSlotCheckboxInput,"Open Slot");
 
-        const elements = [playerHeader, playerSelection, sourceSelectionLabel, sourceSelectionInput, RTMPRegion, RTMPKey, currentPBLabel,
+        const elements = [playerHeader, playerSelectionLabel, playerSelectionInput, sourceSelectionLabel, sourceSelectionInput, RTMPRegion, RTMPKey, currentPBLabel,
                           currentPBTextInput, AFKCheckboxLabel, openSlotCheckboxLabel];
 
         for (let id in elements) {
