@@ -14,6 +14,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     NodeCG.waitForReplicants(featuredPlayerSettingsReplicant, smallPlayerSettingsReplicant, runDataReplicant, currentAmountOfPlayersReplicant).then(() => {
         currentAmountOfPlayers = currentAmountOfPlayersReplicant.value;
         createPlayers(currentAmountOfPlayers);
+
         nodecg.listenFor(`${web}-number-of-players`, (newValue) => {
             console.log(`${newValue} players received`);
             currentAmountOfPlayers = newValue;
@@ -83,16 +84,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function insertRunData(data, name, id) {
-        console.log(data.teams);
-        const teams = data.teams;
+        if (data !== undefined) {
+            const teams = data.teams;
 
-        for (let i = 0; i <= teams.length; i++) {
-            const player = teams[i].players["0"];
+            for (let i = 0; i <= teams.length; i++) {
+                const player = teams[i].players["0"];
 
-            if (player.name === name) {
-                const playerNameSpan = document.getElementById(`player-name-${id}`);
-                playerNameSpan.innerHTML = teams[i].players["0"].social.twitch;
-                break;
+                if (player.name === name) {
+                    const playerNameSpan = document.getElementById(`player-name-${id}`);
+                    playerNameSpan.innerHTML = teams[i].players["0"].social.twitch;
+                    break;
+                }
             }
         }
     }
@@ -168,7 +170,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function createTwitchLogo(id) {
         const img = document.createElement("img");
         img.setAttribute("class", "twitch-logo");
-        img.setAttribute("src", "/bundles/mgsr-unleashed/graphics/img/TwitchGlitchWhite.svg");
+        img.setAttribute("src", "/bundles/mgsr-unmetal-unleashed/graphics/img/TwitchGlitchWhite.svg");
         img.setAttribute("id", id);
         return img;
     }

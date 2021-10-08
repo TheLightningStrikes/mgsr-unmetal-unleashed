@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', (event) => {
-    const playerFeaturedReplicant = nodecg.Replicant("player-featured-settings");
+    const playerFeaturedReplicant = nodecg.Replicant("player-featured-settings", {defaultValue: {}});
     const RTMPFeaturedPlayerReplicant = nodecg.Replicant("rtmp-data-featured-player");
     const runDataReplicant = nodecg.Replicant('runDataActiveRun', 'nodecg-speedcontrol');
     const mediaSourcesReplicant = nodecg.Replicant("obs-media-sources");
@@ -13,13 +13,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const AFK = document.getElementById("afk");
     const openSlot = document.getElementById("open-slot");
 
-    AFK.onclick = function() {onCheckboxClick("afk", AFK.checked)};
-    openSlot.onclick = function() {onCheckboxClick("open-slot", openSlot.checked)};
+    AFK.onclick = function () {
+        onCheckboxClick("afk", AFK.checked)
+    };
+    openSlot.onclick = function () {
+        onCheckboxClick("open-slot", openSlot.checked)
+    };
 
     const server = 'server';
     const web = 'web';
 
     initializeValues();
+
     function initializeValues() {
         nodecg.listenFor(`${web}-media-sources`, (data) => {
             sourceSelection.innerHTML = "";
@@ -58,35 +63,36 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
 
         NodeCG.waitForReplicants(playerFeaturedReplicant, runDataReplicant, RTMPFeaturedPlayerReplicant, mediaSourcesReplicant).then(() => {
-            if(runDataReplicant.value !== undefined) {
-                const options = createPlayerSelection(runDataReplicant.value.teams);
-                for (let i = 0; i < options.length; i++) {
-                    playerSelection.append(options[i]);
+            if (playerFeaturedReplicant.value !== undefined) {
+                if (runDataReplicant.value !== undefined) {
+                    const options = createPlayerSelection(runDataReplicant.value.teams);
+                    for (let i = 0; i < options.length; i++) {
+                        playerSelection.append(options[i]);
+                    }
                 }
-            }
-            if(mediaSourcesReplicant.value !== undefined) {
-                const options = createMediaSourceSelection(mediaSourcesReplicant.value.mediaSources);
-                for (let i = 0; i < options.length; i++) {
-                    sourceSelection.append(options[i]);
+                if (mediaSourcesReplicant.value !== undefined) {
+                    const options = createMediaSourceSelection(mediaSourcesReplicant.value.mediaSources);
+                    for (let i = 0; i < options.length; i++) {
+                        sourceSelection.append(options[i]);
+                    }
                 }
+
+                if (playerFeaturedReplicant.value.rtmp.region !== undefined) {
+                    RTMPRegion.value = playerFeaturedReplicant.value.rtmp.region;
+                }
+
+                if (playerFeaturedReplicant.value.rtmp.key !== undefined) {
+                    RTMPKey.value = playerFeaturedReplicant.value.rtmp.key;
+                }
+
+                if (playerFeaturedReplicant.value.currentPB !== undefined) {
+                    currentPB.value = playerFeaturedReplicant.value.currentPB;
+                }
+
+                AFK.checked = playerFeaturedReplicant.value.afk;
+                openSlot.checked = playerFeaturedReplicant.value.openSlot;
             }
 
-            if (playerFeaturedReplicant.value.rtmp.region !== undefined) {
-                RTMPRegion.value = playerFeaturedReplicant.value.rtmp.region;
-            }
-
-            if (playerFeaturedReplicant.value.rtmp.key !== undefined) {
-                RTMPKey.value = playerFeaturedReplicant.value.rtmp.key;
-            }
-
-            if (playerFeaturedReplicant.value.currentPB !== undefined) {
-                currentPB.value = playerFeaturedReplicant.value.currentPB;
-            }
-
-            AFK.checked = playerFeaturedReplicant.value.afk;
-            openSlot.checked = playerFeaturedReplicant.value.openSlot;
-
-            //TODO: change repository name
             runDataReplicant.on("change", (newValue) => {
                 if (newValue) {
                     playerSelection.innerHTML = "";
@@ -121,25 +127,35 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const playerSelection = document.getElementById("player-selection-featured");
         const sourceSelection = document.getElementById(`media-source-selection-featured`);
 
-        playerFeaturedReplicant.value = {"id": "featured", "playerSelected": playerSelection.value, "rtmp": {"region": RTMPRegion.value, "key": RTMPKey.value},
-            "sourceName": sourceSelection.value, "currentPB": currentPB.value, "afk": AFK.checked, "openSlot": openSlot.checked};
+        playerFeaturedReplicant.value = {
+            "id": "featured",
+            "playerSelected": playerSelection.value,
+            "rtmp": {"region": RTMPRegion.value, "key": RTMPKey.value},
+            "sourceName": sourceSelection.value,
+            "currentPB": currentPB.value,
+            "afk": AFK.checked,
+            "openSlot": openSlot.checked
+        };
 
-        RTMPFeaturedPlayerReplicant.value = {"id": "featured", "rtmp": {"region": RTMPRegion.value, "key": RTMPKey.value},
-            "sourceName": sourceSelection.value};
+        RTMPFeaturedPlayerReplicant.value = {
+            "id": "featured", "rtmp": {"region": RTMPRegion.value, "key": RTMPKey.value},
+            "sourceName": sourceSelection.value
+        };
     }
 
     function onCheckboxClick(id, checked) {
         if (checked) {
             switch (id) {
-                case "open-slot": AFK.checked = false;
+                case "open-slot":
+                    AFK.checked = false;
                     openSlot.checked = true;
                     break;
-                case "afk": openSlot.checked = false;
+                case "afk":
+                    openSlot.checked = false;
                     AFK.checked = true;
                     break;
             }
-        }
-        else {
+        } else {
             document.getElementById(id).checked = false;
         }
     }

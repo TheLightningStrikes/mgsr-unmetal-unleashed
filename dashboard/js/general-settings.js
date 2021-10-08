@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const connectButton = document.getElementById("obs-connect-button");
     const disconnectButton = document.getElementById("obs-disconnect-button");
 
-    const numberOfPlayersReplicant = nodecg.Replicant("number-of-players");
+    const numberOfPlayersReplicant = nodecg.Replicant("number-of-players", {defaultValue: 0});
     const RTMPSmallPlayerReplicant = nodecg.Replicant("rtmp-data-small-player");
     const RTMPFeaturedPlayerReplicant = nodecg.Replicant("rtmp-data-featured-player");
 
@@ -71,13 +71,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return `rtmp://${regions[region]}.${rtmpHost}/runners/${key}`;
     }
 
-    document.getElementById("setup-button").onclick = function(e) {
+    document.getElementById("setup-button").onclick = function (e) {
         numberOfPlayersReplicant.value = numberOfPlayers.value;
         nodecg.sendMessage(`${server}-number-of-players`, numberOfPlayers.value);
         e.preventDefault();
     };
 
     initializeValues();
+
     function initializeValues() {
         nodecg.listenFor(`${web}-swap-video-source`, (data) => {
             swapMediaSource(data.source1.sourceName, data.source2.sourceName);
@@ -94,19 +95,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
             });
 
             RTMPFeaturedPlayerReplicant.on("change", (newValue) => {
-                setMediaSource(newValue.sourceName, getRTMPLink(newValue.rtmp.region, newValue.rtmp.key));
+                if (newValue !== undefined) {
+                    setMediaSource(newValue.sourceName, getRTMPLink(newValue.rtmp.region, newValue.rtmp.key));
+                }
             });
 
             nodecg.sendMessage(`${server}-obs-status`, {connected: false});
         });
     }
 
-    connectButton.onclick = function(e) {
+    connectButton.onclick = function (e) {
         let connectionSettings = {};
-        if (OBSPassword.value !== "undefined" || OBSPassword.value  !== "") {
-            connectionSettings = { address: OBSHost.value, password: OBSPassword.value };
-        }
-        else {
+        if (OBSPassword.value !== "undefined" || OBSPassword.value !== "") {
+            connectionSettings = {address: OBSHost.value, password: OBSPassword.value};
+        } else {
             connectionSettings = {address: OBSHost.value};
         }
         obs.connect(connectionSettings).then(() => {
@@ -130,7 +132,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             nodecg.sendMessage(`${server}-obs-status`, {connected: false});
         });
-        console.log(obs);
 
         e.preventDefault();
     };
@@ -224,7 +225,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
-    disconnectButton.onclick = function(e) {
+    disconnectButton.onclick = function (e) {
         obs.disconnect();
         OBSHost.disabled = false;
         OBSPassword.disabled = false;
