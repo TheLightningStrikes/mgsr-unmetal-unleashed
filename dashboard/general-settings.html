@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/general-settings.js"></script>
+    <script type='text/javascript' src='../node_modules/obs-websocket-js/dist/obs-websocket.js'></script>
+    <link href="css/panel.css" rel="stylesheet">
+    <title>Small Player Panel Setup</title>
+</head>
+<body>
+<form id="small-player-setup-form">
+    <h3>OBS Login</h3>
+    <label for="obs-host">Host</label>
+    <input type="text" id="obs-host" value="localhost:4444" name="obs-host" placeholder="host:port">
+    <label for="obs-password">Password</label>
+    <input type="password" id="obs-password" name="obs-password" placeholder="Password">
+    <input class="submitButton obs-connect" id="obs-connect-button" type="button" value="Connect">
+    <input class="submitButton obs-connect disconnect" id="obs-disconnect-button" type="button" value="Disconnect">
+
+    <h3>Small Player Settings</h3>
+    <label for="number-of-small-players">Number of Small Players</label>
+    <select id="number-of-small-players" name="number-of-small-players" class="small-player-select">
+        <option value="0">0 Players</option>
+        <option value="1">1 Player</option>
+        <option value="2">2 Players</option>
+        <option value="3">3 Players</option>
+        <option value="4">4 Players</option>
+        <option value="5">5 Players</option>
+        <option value="6" selected>6 Players</option>
+    </select>
+    <input class="submitButton" id="setup-button" type="button" value="Setup">
+</form>
+</body>
+</html>

@@ -1,0 +1,115 @@
+label {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 12pt;
+}
+
+input[type=text], input[type=password] {
+    width: calc(100% - 17px);
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 12pt;
+}
+
+body {
+    background-color: #2F3A4F;
+    color: white;
+    padding: 10px;
+    margin: 0;
+}
+
+.submitButton {
+    padding: 4px 20px;
+    height: 30px;
+    width: 130px;
+    color: white;
+    background-color: #272727;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-size: 11pt;
+    border-style: none;
+    border-radius: 4px;
+    font-family: "Roboto", sans-serif;
+    transition: 0.3s;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.submitButton:hover {
+    background-color: #383838;
+}
+
+.submitButton:active {
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);
+    background-color: #848484;
+}
+
+.small-player {
+    width: calc(33% - 20px);
+    padding: 0 10px 10px 10px;
+    display: inline-block;
+    float: left;
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.small-player-button {
+    width: 100%;
+    display: inline-block;
+    padding: 0 10px 10px 10px;
+}
+
+.small-player-select {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.no-players-selected {
+    padding: 10px;
+    width: calc(100% - 20px);
+    display: none;
+}
+
+label.rtmp {
+    width: 50%;
+    display: inline-block;
+    float: left;
+}
+
+select {
+    font-size: 11pt;
+    padding: 8px;
+    width: 100%;
+}
+
+label.rtmp select {
+    width: 70%;
+}
+
+label.rtmp > select, label.rtmp > input {
+    margin-top: 2px;
+}
+
+.submitButton.obs-connect {
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.submitButton.obs-connect.disconnect {
+    background-color: red;
+    display: none;
+}
+
+.submitButton.disconnect:hover {
+    background-color: #fd6b6b;
+}
+
+.submitButton.disconnect:active {
+    background-color: #860e0e;
+}

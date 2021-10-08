@@ -1,0 +1,63 @@
+{
+  "name": "mgsr-unleashed",
+  "version": "1.0.0",
+  "description": "Dashboard panel and graphics for entering stats with NodeCG",
+  "homepage": "a github page lol",
+  "author": "TheLightningStrikes",
+  "dependencies": {
+    "obs-websocket-js": "^4.0.3"
+  },
+  "nodecg": {
+    "compatibleRange": "^1.0.0",
+    "dashboardPanels": [
+      {
+        "name": "general-settings-panel",
+        "title": "General Settings",
+        "width": 2,
+        "file": "general-settings.html",
+        "headerColor": "#525F7F",
+        "workspace": "UnMetal Unleashed"
+      },
+      {
+        "name": "featured-player-panel",
+        "title": "Large Player Settings",
+        "width": 2,
+        "file": "player-featured.html",
+        "headerColor": "#525F7F",
+        "workspace": "UnMetal Unleashed"
+      },
+      {
+        "name": "player-small-settings-panel",
+        "title": "Small Player Settings",
+        "width": 6,
+        "file": "player-small-settings.html",
+        "headerColor": "#525F7F",
+        "workspace": "UnMetal Unleashed"
+      },
+      {
+        "name": "swap-panel",
+        "title": "Swap Runners",
+        "width": 2,
+        "file": "swap.html",
+        "headerColor": "#525F7F",
+        "workspace": "UnMetal Unleashed"
+      },
+      {
+        "name": "statistics-panel",
+        "title": "Statistics",
+        "width": 2,
+        "file": "statistics.html",
+        "headerColor": "#525F7F",
+        "workspace": "UnMetal Unleashed"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "unmetal-unleashed.html",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "license": "GPL-3.0"
+}

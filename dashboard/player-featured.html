@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/player-featured.js"></script>
+    <link href="css/panel.css" rel="stylesheet">
+    <title>Featured Player Panel</title>
+</head>
+<body>
+    <form id="featured-form">
+        <h3>Featured Player</h3>
+        <div id="player-selection-wrapper"></div>
+        <div id="media-source-selection-wrapper-featured">
+            <label for="media-source-selection-featured" >OBS Media Source
+                <select name="media-source-selection-featured" id="media-source-selection-featured" disabled>
+                </select>
+            </label>
+        </div>
+        <label class="rtmp" for="rtmp-region">RTMP Region
+            <select name="rtmp-region" id="rtmp-region">
+                <option value="NA">NA</option>
+                <option value="EU">EU</option>
+                <option value="SGP">SGP</option>
+                <option value="OCE">OCE</option>
+            </select>
+        </label>
+        <label class="rtmp" for="rtmp-key">RTMP Key
+            <input type="text" id="rtmp-key" name="rtmp-key" placeholder="Key">
+        </label>
+        <label for="current-pb">Current PB</label>
+        <input type="text" id="current-pb" name="current-pb" placeholder="PB time">
+        <label for="afk">
+            <input type="checkbox" id="afk" name="afk">
+            AFK
+        </label>
+        <label for="open-slot">
+            <input type="checkbox" id="open-slot" name="open-slot">
+            Open Slot
+        </label>
+        <input id="featured-player-submit" class="submitButton" type="button" value="Update">
+    </form>
+</body>
+</html>
