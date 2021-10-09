@@ -67,7 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        nodecg.listenFor(`${web}-swap-video-source`, (data) => {
+        nodecg.listenFor(`${web}-swap-video-source-result`, (data) => {
             if (data !== undefined) {
                 for (let i = 0; i < currentAmountOfPlayers; i++) {
                     const id = i + 1;
@@ -82,7 +82,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         NodeCG.waitForReplicants(smallPlayerSettingsReplicant, runDataReplicant, RTMPSmallPlayerSettingsDataReplicant, mediaSourcesReplicant).then(() => {
-            currentAmountOfPlayers = Object.keys(smallPlayerSettingsReplicant.value).length;
+            if (smallPlayerSettingsReplicant.value !== undefined) {
+                currentAmountOfPlayers = Object.keys(smallPlayerSettingsReplicant.value).length;
+            }
             createPlayers(currentAmountOfPlayers);
             for (let id in smallPlayerSettingsReplicant.value) {
                 const smallPlayerData = smallPlayerSettingsReplicant.value[id];
@@ -149,7 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const option = document.createElement("option");
             option.value = sourceName;
             option.innerHTML = sourceName;
-            if (smallPlayerSettingsReplicant.value[id - 1] !== undefined && sourceName === smallPlayerSettingsReplicant.value[id - 1].sourceName) {
+            if (smallPlayerSettingsReplicant.value !== undefined && smallPlayerSettingsReplicant.value[id - 1] !== undefined && sourceName === smallPlayerSettingsReplicant.value[id - 1].sourceName) {
                 option.selected = true;
             }
 
@@ -165,7 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const player = data[dataID].players[0];
             option.value = player.name;
             option.innerHTML = player.name;
-            if (smallPlayerSettingsReplicant.value[id - 1] !== undefined && player.name === smallPlayerSettingsReplicant.value[id - 1].playerSelected) {
+            if (smallPlayerSettingsReplicant.value !== undefined && smallPlayerSettingsReplicant.value[id - 1] !== undefined && player.name === smallPlayerSettingsReplicant.value[id - 1].playerSelected) {
                 option.selected = true;
             }
             options.push(option);

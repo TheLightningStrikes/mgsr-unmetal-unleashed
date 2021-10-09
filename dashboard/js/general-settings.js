@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function initializeValues() {
         nodecg.listenFor(`${web}-swap-video-source`, (data) => {
-            swapMediaSource(data.source1.sourceName, data.source2.sourceName);
+            swapMediaSource(data.source1, data.source2);
         });
 
         NodeCG.waitForReplicants(numberOfPlayersReplicant, RTMPSmallPlayerReplicant, RTMPFeaturedPlayerReplicant).then(() => {
@@ -164,14 +164,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function swapMediaSource(source1, source2) {
-        console.log(source1, source2);
-        if (source1 === source2) {
+        const source1sourceName = source1.sourceName;
+        const source2sourceName = source2.sourceName;
+        console.log(source1sourceName, source2sourceName);
+        if (source1sourceName === source2sourceName) {
             return;
         }
 
         if (obs._connected) {
-            const promises = [obs.send("GetSceneItemProperties", {item: source1}), obs.send("GetSceneItemProperties", {item: source2})];
-            Promise.all(promises).then((data) => {
+            const getSceneItemInfoPromises = [obs.send("GetSceneItemProperties", {item: source1sourceName}), obs.send("GetSceneItemProperties", {item: source2sourceName})];
+            Promise.all(getSceneItemInfoPromises).then((data) => {
                 const oldSource1Properties = data[0];
                 const oldSource2Properties = data[1];
 
@@ -190,7 +192,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 const source2Y = oldSource2Properties.position.y;
 
                 const newSource1Properties = {
-                    item: source1,
+                    item: source1sourceName,
                     bounds: {
                         x: source2Width,
                         y: source2Height
@@ -201,7 +203,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     }
                 };
                 const newSource2Properties = {
-                    item: source2,
+                    item: source2sourceName,
                     bounds: {
                         x: source1Width,
                         y: source1Height
@@ -215,11 +217,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 console.log(newSource1Properties);
                 console.log(newSource2Properties);
 
-                obs.send("SetSceneItemProperties", newSource1Properties).then((data) => {
-                    console.log("SetSceneItemProperties Source1", data);
-                });
-                obs.send("SetSceneItemProperties", newSource2Properties).then((data) => {
-                    console.log("SetSceneItemProperties Source2", data);
+                const sendSceneItemInfoPromises = [obs.send("SetSceneItemProperties", newSource1Properties), obs.send("SetSceneItemProperties", newSource2Properties)];
+                Promise.all(sendSceneItemInfoPromises).then((data) => {
+                    console.log(data);
+                    nodecg.sendMessage(`${server}-swap-video-source-result`, {source1, source2});
+                }).catch((error) => {
+                    console.error(error);
                 });
             });
         }

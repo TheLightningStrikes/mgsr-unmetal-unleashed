@@ -18,4 +18,10 @@ module.exports = function (nodecg) {
     nodecg.listenFor(`${server}-media-sources`, (data) => {
         nodecg.sendMessage(`${web}-media-sources`, data);
     });
+
+    nodecg.listenFor(`${server}-swap-video-source-result`, (data) => {
+        nodecg.sendMessage(`${web}-swap-video-source-result`, data);
+    });
+
+
 }

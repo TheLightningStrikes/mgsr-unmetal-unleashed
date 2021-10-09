@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
-        nodecg.listenFor(`${web}-swap-video-source`, (data) => {
+        nodecg.listenFor(`${web}-swap-video-source-result`, (data) => {
             if (data !== undefined) {
                 if (data.source1.id === "featured") {
                     updateValues(data.source2.playerData);
@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const playerName = teamsInSpeedcontrol[i].players[0].name;
             option.value = playerName;
             option.innerHTML = playerName;
-            if (playerName === playerFeaturedReplicant.value.playerSelected) {
+            if (playerFeaturedReplicant.value !== undefined && playerName === playerFeaturedReplicant.value.playerSelected) {
                 option.selected = true;
             }
             options.push(option);
