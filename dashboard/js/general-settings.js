@@ -227,18 +227,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     disconnectButton.onclick = function (e) {
         obs.disconnect();
-        OBSHost.disabled = false;
-        OBSPassword.disabled = false;
-        disconnectButton.style.display = "none";
-        connectButton.style.display = "inline-block";
-
+        disconnect();
         console.log(obs);
-        nodecg.sendMessage(`${server}-obs-status`, {connected: false});
 
         e.preventDefault();
     }
 
-    obs.on('ConnectionClosed', () => nodecg.sendMessage(`${server}-obs-status`, {connected: false}));
+    function disconnect() {
+        OBSHost.disabled = false;
+        OBSPassword.disabled = false;
+        disconnectButton.style.display = "none";
+        connectButton.style.display = "inline-block";
+        nodecg.sendMessage(`${server}-obs-status`, {connected: false});
+    }
+
+    obs.on('ConnectionClosed', () => disconnect());
 
     // obs.on('ConnectionOpened', (data) => callback(data));
     // obs.on('AuthenticationSuccess', (data) => callback(data));
