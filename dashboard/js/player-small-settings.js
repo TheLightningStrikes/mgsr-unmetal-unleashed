@@ -268,7 +268,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const sourceSelectionInput = createSelectInput(`media-source-selection-${id}`);
         let sourceSelectionOptions;
 
-        if (runDataReplicant.value !== undefined) {
+        if (mediaSourcesReplicant.value !== undefined) {
             sourceSelectionOptions = (createMediaSourceOptions(id, mediaSourcesReplicant.value.mediaSources));
         } else {
             sourceSelectionOptions = [];

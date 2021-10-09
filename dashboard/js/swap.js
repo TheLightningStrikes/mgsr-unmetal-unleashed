@@ -8,14 +8,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const server = 'server';
     const web = 'web';
 
+    let source1playerSelected;
+    let source2playerSelected;
+
     initializeValues();
+
     function initializeValues() {
         nodecg.listenFor(`${web}-obs-status`, (status) => {
             if (status.connected) {
                 source1.disabled = false;
                 source2.disabled = false;
-            }
-            else {
+            } else {
                 source1.disabled = true;
                 source2.disabled = true;
             }
@@ -44,20 +47,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     source1.append(options1[i]);
                     source2.append(options2[i]);
                 }
+
+                source1.value = source1playerSelected;
+                source2.value = source2playerSelected;
             });
 
             smallPlayerSettingsReplicant.on('change', (data) => {
-                  source1.innerHTML = "";
-                  source2.innerHTML = "";
+                source1.innerHTML = "";
+                source2.innerHTML = "";
 
-                  const options1 = createPlayerSelection(playerFeaturedReplicant.value, data);
-                  const options2 = createPlayerSelection(playerFeaturedReplicant.value, data);
+                const options1 = createPlayerSelection(playerFeaturedReplicant.value, data);
+                const options2 = createPlayerSelection(playerFeaturedReplicant.value, data);
 
-                  for (let i = 0; i < options1.length; i++) {
-                      source1.append(options1[i]);
-                      source2.append(options2[i]);
-                  }
-              });
+                for (let i = 0; i < options1.length; i++) {
+                    source1.append(options1[i]);
+                    source2.append(options2[i]);
+                }
+
+                source1.value = source1playerSelected;
+                source2.value = source2playerSelected;
+            });
         });
     }
 
@@ -85,8 +94,23 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const player1 = findPlayerByPlayerName(source1.value);
         const player2 = findPlayerByPlayerName(source2.value);
 
-        const swapData = {"source1": {"sourceName": player1.sourceName, "playerName": player1.playerSelected, "id": player1.id, "playerData": player1},
-            "source2": {"sourceName": player2.sourceName, "playerName": player2.playerSelected, "id": player2.id, "playerData": player2}};
+        source1playerSelected = source1.value;
+        source2playerSelected = source2.value;
+
+        const swapData = {
+            "source1": {
+                "sourceName": player1.sourceName,
+                "playerName": player1.playerSelected,
+                "id": player1.id,
+                "playerData": player1
+            },
+            "source2": {
+                "sourceName": player2.sourceName,
+                "playerName": player2.playerSelected,
+                "id": player2.id,
+                "playerData": player2
+            }
+        };
         nodecg.sendMessage(`${server}-swap-video-source`, swapData);
 
         e.preventDefault();
@@ -95,8 +119,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function findPlayerByPlayerName(playerName) {
         if (playerFeaturedReplicant.value.playerSelected === playerName) {
             return Object.assign({}, playerFeaturedReplicant.value);
-        }
-        else {
+        } else {
             const smallPlayerData = smallPlayerSettingsReplicant.value;
             for (let id in smallPlayerData) {
                 const player = smallPlayerData[id];
