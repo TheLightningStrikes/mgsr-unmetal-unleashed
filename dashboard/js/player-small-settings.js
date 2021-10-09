@@ -94,10 +94,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 document.getElementById(`media-source-selection-${playerID}`).value = smallPlayerData.sourceName;
 
-                document.getElementById(`rtmp-region-${playerID}`).value = smallPlayerData.rtmp.region;
+                if (smallPlayerData.rtmp !== undefined) {
+                    if (smallPlayerData.rtmp.region !== undefined) {
+                        document.getElementById(`rtmp-region-${playerID}`).value = smallPlayerData.rtmp.region;
+                    }
 
-                if (smallPlayerData.rtmp.key !== undefined) {
-                    document.getElementById(`rtmp-key-${playerID}`).value = smallPlayerData.rtmp.key;
+                    if (smallPlayerData.rtmp.key !== undefined) {
+                        document.getElementById(`rtmp-key-${playerID}`).value = smallPlayerData.rtmp.key;
+                    }
                 }
 
                 if (smallPlayerData.currentPB !== undefined) {

@@ -77,12 +77,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     }
                 }
 
-                if (playerFeaturedReplicant.value.rtmp.region !== undefined) {
-                    RTMPRegion.value = playerFeaturedReplicant.value.rtmp.region;
-                }
+                if (playerFeaturedReplicant.value.rtmp !== undefined) {
+                    if (playerFeaturedReplicant.value.rtmp.region !== undefined) {
+                        RTMPRegion.value = playerFeaturedReplicant.value.rtmp.region;
+                    }
 
-                if (playerFeaturedReplicant.value.rtmp.key !== undefined) {
-                    RTMPKey.value = playerFeaturedReplicant.value.rtmp.key;
+                    if (playerFeaturedReplicant.value.rtmp.key !== undefined) {
+                        RTMPKey.value = playerFeaturedReplicant.value.rtmp.key;
+                    }
                 }
 
                 if (playerFeaturedReplicant.value.currentPB !== undefined) {
