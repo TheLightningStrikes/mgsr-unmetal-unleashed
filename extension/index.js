@@ -23,5 +23,11 @@ module.exports = function (nodecg) {
         nodecg.sendMessage(`${web}-swap-video-source-result`, data);
     });
 
+    nodecg.listenFor(`${server}-rtmp-small-player`, (data) => {
+        nodecg.sendMessage(`${web}-rtmp-small-player`, data);
+    });
 
+    nodecg.listenFor(`${server}-rtmp-featured-player`, (data) => {
+        nodecg.sendMessage(`${web}-rtmp-featured-player`, data);
+    });
 }

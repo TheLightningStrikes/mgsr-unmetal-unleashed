@@ -84,21 +84,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
             swapMediaSource(data.source1, data.source2);
         });
 
+        nodecg.listenFor(`${web}-rtmp-small-player`, (data) => {
+            for (let id in data) {
+                setMediaSource(data[id].sourceName, getRTMPLink(data[id].rtmp.region, data[id].rtmp.key));
+            }
+        });
+
+        nodecg.listenFor(`${web}-rtmp-featured-player`, (data) => {
+            console.log(data);
+            setMediaSource(data.sourceName, getRTMPLink(data.rtmp.region, data.rtmp.key));
+        });
+
         NodeCG.waitForReplicants(numberOfPlayersReplicant, RTMPSmallPlayerReplicant, RTMPFeaturedPlayerReplicant).then(() => {
             numberOfPlayers.value = numberOfPlayersReplicant.value;
-
-            RTMPSmallPlayerReplicant.on("change", (newValue) => {
-                // set obs
-                for (let id in newValue) {
-                    setMediaSource(newValue[id].sourceName, getRTMPLink(newValue[id].rtmp.region, newValue[id].rtmp.key));
-                }
-            });
-
-            RTMPFeaturedPlayerReplicant.on("change", (newValue) => {
-                if (newValue !== undefined) {
-                    setMediaSource(newValue.sourceName, getRTMPLink(newValue.rtmp.region, newValue.rtmp.key));
-                }
-            });
 
             nodecg.sendMessage(`${server}-obs-status`, {connected: false});
         });
@@ -148,6 +146,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function setMediaSource(sourceName, url) {
+        console.log(sourceName);
         if (obs._connected) {
             const video = {
                 "hidden": false,

@@ -223,20 +223,36 @@ window.addEventListener('DOMContentLoaded', () => {
             const RTMPRegion = document.getElementById(`rtmp-region-${id}`).value;
             const RTMPKey = document.getElementById(`rtmp-key-${id}`).value;
 
-            rtmp[i] = {"id": id, "rtmp": {"region": RTMPRegion, "key": RTMPKey}, "sourceName": sourceName}
+            // we use "" to avoid data redundancy
+            rtmp[i] = {"id": "" + id, "rtmp": {"region": "" + RTMPRegion, "key": "" + RTMPKey}, "sourceName": "" + sourceName}
             data[i] = {
-                "id": id,
-                "playerSelected": playerSelected,
-                "rtmp": {"region": RTMPRegion, "key": RTMPKey},
-                "sourceName": sourceName,
-                "currentPB": currentPB,
+                "id": "" + id,
+                "playerSelected": "" + playerSelected,
+                "rtmp": {"region": "" + RTMPRegion, "key": "" + RTMPKey},
+                "sourceName": "" + sourceName,
+                "currentPB": "" + currentPB,
                 "afk": afk,
                 "openSlot": openSlot
             };
         }
 
         smallPlayerSettingsReplicant.value = data;
-        RTMPSmallPlayerSettingsDataReplicant.value = rtmp;
+        if (checkRTMPForChange(rtmp)) {
+            RTMPSmallPlayerSettingsDataReplicant.value = rtmp;
+            nodecg.sendMessage(`${server}-rtmp-small-player`, rtmp);
+        }
+    }
+
+    function checkRTMPForChange(data) {
+        for (let i = 0; i < currentAmountOfPlayers; i++) {
+            const smallPlayer = RTMPSmallPlayerSettingsDataReplicant.value[i];
+            const rtmpData = data[i];
+            if (rtmpData.rtmp.region === smallPlayer.rtmp.region && rtmpData.rtmp.key === smallPlayer.rtmp.key && rtmpData.sourceName === smallPlayer.sourceName) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     function createPlayers(amount) {

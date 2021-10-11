@@ -108,6 +108,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
+    function checkRTMPForChange(data) {
+        const featuredPlayer = RTMPFeaturedPlayerReplicant.value;
+        if (data.rtmp.region === featuredPlayer.rtmp.region && data.rtmp.key === featuredPlayer.rtmp.key && data.sourceName === featuredPlayer.sourceName) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function updateValues(values) {
         document.getElementById("player-selection-featured").value = values.playerSelected;
         document.getElementById(`media-source-selection-featured`).value = values.sourceName;
@@ -139,10 +148,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
             "openSlot": openSlot.checked
         };
 
-        RTMPFeaturedPlayerReplicant.value = {
-            "id": "featured", "rtmp": {"region": RTMPRegion.value, "key": RTMPKey.value},
-            "sourceName": sourceSelection.value
+        const rtmp = {
+            "id": "featured", "rtmp": {"region": "" + RTMPRegion.value, "key": "" + RTMPKey.value},
+            "sourceName": "" + sourceSelection.value
         };
+
+        if (checkRTMPForChange(rtmp)) {
+            RTMPFeaturedPlayerReplicant.value = rtmp;
+            nodecg.sendMessage(`${server}-rtmp-featured-player`, rtmp);
+        }
     }
 
     function onCheckboxClick(id, checked) {
