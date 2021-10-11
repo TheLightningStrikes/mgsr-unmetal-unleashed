@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
         nodecg.listenFor(`${web}-swap-video-source-result`, (data) => {
             if (data !== undefined) {
                 for (let i = 0; i < currentAmountOfPlayers; i++) {
-                    const id = i + 1;
+                    const id = Number(i + 1) + "";
                     if (data.source1.id === id) {
                         updateValues(id, data.source2.playerData);
                     }
@@ -130,11 +130,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateValues(id, values) {
-        document.getElementById(`player-selection-${id}`).value = values.playerSelected;
-        document.getElementById(`media-source-selection-${id}`).value = values.sourceName;
-        document.getElementById(`rtmp-region-${id}`).value = values.rtmp.region;
-        document.getElementById(`rtmp-key-${id}`).value = values.rtmp.key;
-        document.getElementById(`current-pb-${id}`).value = values.currentPB;
+        document.getElementById(`player-selection-${id}`).value = "" + values.playerSelected;
+        document.getElementById(`media-source-selection-${id}`).value = "" + values.sourceName;
+        document.getElementById(`rtmp-region-${id}`).value = "" + values.rtmp.region;
+        document.getElementById(`rtmp-key-${id}`).value = "" + values.rtmp.key;
+        document.getElementById(`current-pb-${id}`).value = "" + values.currentPB;
         document.getElementById(`afk-${id}`).checked = values.afk;
         document.getElementById(`open-slot-${id}`).checked = values.openSlot;
         updateReplicant();
@@ -246,10 +246,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkRTMPForChange(rtmpData, smallPlayer) {
-        if (rtmpData.rtmp.region === smallPlayer.rtmp.region && rtmpData.rtmp.key === smallPlayer.rtmp.key && rtmpData.sourceName === smallPlayer.sourceName) {
-            return false;
-        } else {
-            return true;
+        if (smallPlayer !== undefined) {
+            if (rtmpData.rtmp.region === smallPlayer.rtmp.region && rtmpData.rtmp.key === smallPlayer.rtmp.key && rtmpData.sourceName === smallPlayer.sourceName) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 

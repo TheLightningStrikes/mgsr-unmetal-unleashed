@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function createPlayerOption(player) {
         const option = document.createElement("option");
-        option.value = player.playerSelected;
+        option.value = player.id;
         option.innerHTML = player.playerSelected;
         return option;
     }
@@ -116,14 +116,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
     };
 
-    function findPlayerByPlayerName(playerName) {
-        if (playerFeaturedReplicant.value.playerSelected === playerName) {
+    function findPlayerByPlayerName(id) {
+        if (playerFeaturedReplicant.value.id === id) {
             return Object.assign({}, playerFeaturedReplicant.value);
         } else {
             const smallPlayerData = smallPlayerSettingsReplicant.value;
-            for (let id in smallPlayerData) {
-                const player = smallPlayerData[id];
-                if (player.playerSelected === playerName) {
+            for (let i in smallPlayerData) {
+                const player = smallPlayerData[i];
+                if (player.id === id) {
                     return Object.assign({}, player);
                 }
             }
