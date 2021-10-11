@@ -155,7 +155,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         if (checkRTMPForChange(rtmp)) {
             RTMPFeaturedPlayerReplicant.value = rtmp;
-            nodecg.sendMessage(`${server}-rtmp-featured-player`, rtmp);
+            nodecg.sendMessage(`${server}-rtmp-change`, rtmp);
         }
     }
 

@@ -234,24 +234,22 @@ window.addEventListener('DOMContentLoaded', () => {
                 "afk": afk,
                 "openSlot": openSlot
             };
+
+            if (checkRTMPForChange(rtmp[i], smallPlayerSettingsReplicant.value[i])) {
+                RTMPSmallPlayerSettingsDataReplicant.value = rtmp[i];
+                nodecg.sendMessage(`${server}-rtmp-change`, rtmp[i]);
+            }
         }
 
         smallPlayerSettingsReplicant.value = data;
-        if (checkRTMPForChange(rtmp)) {
-            RTMPSmallPlayerSettingsDataReplicant.value = rtmp;
-            nodecg.sendMessage(`${server}-rtmp-small-player`, rtmp);
-        }
+
     }
 
-    function checkRTMPForChange(data) {
-        for (let i = 0; i < currentAmountOfPlayers; i++) {
-            const smallPlayer = RTMPSmallPlayerSettingsDataReplicant.value[i];
-            const rtmpData = data[i];
-            if (rtmpData.rtmp.region === smallPlayer.rtmp.region && rtmpData.rtmp.key === smallPlayer.rtmp.key && rtmpData.sourceName === smallPlayer.sourceName) {
-                return false;
-            } else {
-                return true;
-            }
+    function checkRTMPForChange(rtmpData, smallPlayer) {
+        if (rtmpData.rtmp.region === smallPlayer.rtmp.region && rtmpData.rtmp.key === smallPlayer.rtmp.key && rtmpData.sourceName === smallPlayer.sourceName) {
+            return false;
+        } else {
+            return true;
         }
     }
 

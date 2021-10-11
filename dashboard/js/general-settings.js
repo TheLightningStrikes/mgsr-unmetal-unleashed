@@ -84,15 +84,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
             swapMediaSource(data.source1, data.source2);
         });
 
-        nodecg.listenFor(`${web}-rtmp-small-player`, (data) => {
-            for (let id in data) {
-                setMediaSource(data[id].sourceName, getRTMPLink(data[id].rtmp.region, data[id].rtmp.key));
-            }
-        });
+        nodecg.listenFor(`${web}-rtmp-change`, (data) => {
+            setMediaSource(data.sourceName, getRTMPLink(data.rtmp.region, data.rtmp.key))
+                .catch((error) => {
+                    console.log(error);
+                })
+                .then((resolve) => {
+                    console.log(resolve);
 
-        nodecg.listenFor(`${web}-rtmp-featured-player`, (data) => {
-            console.log(data);
-            setMediaSource(data.sourceName, getRTMPLink(data.rtmp.region, data.rtmp.key));
+                    nodecg.sendMessage(`${server}-set-source-result`, data);
+                });
         });
 
         NodeCG.waitForReplicants(numberOfPlayersReplicant, RTMPSmallPlayerReplicant, RTMPFeaturedPlayerReplicant).then(() => {
@@ -147,19 +148,27 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function setMediaSource(sourceName, url) {
         console.log(sourceName);
-        if (obs._connected) {
-            const video = {
-                "hidden": false,
-                "selected": false,
-                "value": url
+        return new Promise((reject, resolve) => {
+            if (obs._connected) {
+                const video = {
+                    "hidden": false,
+                    "selected": false,
+                    "value": url
+                }
+                obs.send("SetSourceSettings", {
+                    sourceName: sourceName,
+                    sourceSettings: {playlist: [video]}
+                })
+                    // .catch((error) => {
+                    //     reject(error);
+                    // })
+                    .then((data) => {
+                        resolve(data);
+                    });
+            } else {
+                reject({connected: false});
             }
-            obs.send("SetSourceSettings", {
-                sourceName: sourceName,
-                sourceSettings: {playlist: [video]}
-            }).then((data) => {
-                //console.log(data);
-            });
-        }
+        });
     }
 
     function swapMediaSource(source1, source2) {
