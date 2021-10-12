@@ -6,8 +6,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const disconnectButton = document.getElementById("obs-disconnect-button");
 
     const numberOfPlayersReplicant = nodecg.Replicant("number-of-players", {defaultValue: 0});
-    const RTMPSmallPlayerReplicant = nodecg.Replicant("rtmp-data-small-player");
-    const RTMPFeaturedPlayerReplicant = nodecg.Replicant("rtmp-data-featured-player");
 
     const mediaSourcesReplicant = nodecg.Replicant("obs-media-sources");
 
@@ -85,18 +83,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
 
         nodecg.listenFor(`${web}-rtmp-change`, (data) => {
+            console.log(data)
+            const copy = Object.assign({}, data);
             setMediaSource(data.sourceName, getRTMPLink(data.rtmp.region, data.rtmp.key))
                 .catch((error) => {
                     console.log(error);
                 })
                 .then((resolve) => {
-                    console.log(resolve);
-
-                    nodecg.sendMessage(`${server}-set-source-result`, data);
+                    nodecg.sendMessage(`${server}-rtmp-change-result`, copy);
                 });
         });
 
-        NodeCG.waitForReplicants(numberOfPlayersReplicant, RTMPSmallPlayerReplicant, RTMPFeaturedPlayerReplicant).then(() => {
+        NodeCG.waitForReplicants(numberOfPlayersReplicant).then(() => {
             numberOfPlayers.value = numberOfPlayersReplicant.value;
 
             nodecg.sendMessage(`${server}-obs-status`, {connected: false});

@@ -27,7 +27,7 @@ module.exports = function (nodecg) {
         nodecg.sendMessage(`${web}-rtmp-change`, data);
     });
 
-    nodecg.listenFor(`${server}-set-source-result`, (data) => {
-        nodecg.sendMessage(`${web}-set-source-result`, data);
+    nodecg.listenFor(`${server}-rtmp-change-result`, (data) => {
+        nodecg.sendMessage(`${web}-rtmp-change-result`, data);
     });
 }

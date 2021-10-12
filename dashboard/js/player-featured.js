@@ -51,6 +51,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        nodecg.listenFor(`${web}-rtmp-change-result`, (data) => {
+            if (data.id === "featured") {
+                RTMPFeaturedPlayerReplicant.value = data;
+            }
+        });
+
         nodecg.listenFor(`${web}-swap-video-source-result`, (data) => {
             if (data !== undefined) {
                 if (data.source1.id === "featured") {
@@ -77,13 +83,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     }
                 }
 
-                if (playerFeaturedReplicant.value.rtmp !== undefined) {
-                    if (playerFeaturedReplicant.value.rtmp.region !== undefined) {
-                        RTMPRegion.value = playerFeaturedReplicant.value.rtmp.region;
+                if (RTMPFeaturedPlayerReplicant.value !== undefined) {
+                    if (RTMPFeaturedPlayerReplicant.value.rtmp.region !== undefined) {
+                        RTMPRegion.value = RTMPFeaturedPlayerReplicant.value.rtmp.region;
                     }
 
-                    if (playerFeaturedReplicant.value.rtmp.key !== undefined) {
-                        RTMPKey.value = playerFeaturedReplicant.value.rtmp.key;
+                    if (RTMPFeaturedPlayerReplicant.value.rtmp.key !== undefined) {
+                        RTMPKey.value = RTMPFeaturedPlayerReplicant.value.rtmp.key;
                     }
                 }
 
@@ -110,9 +116,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function checkRTMPForChange(data) {
         const featuredPlayer = RTMPFeaturedPlayerReplicant.value;
-        if (data.rtmp.region === featuredPlayer.rtmp.region && data.rtmp.key === featuredPlayer.rtmp.key && data.sourceName === featuredPlayer.sourceName) {
-            return false;
-        } else {
+        if (featuredPlayer !== undefined && featuredPlayer.rtmp !== undefined) {
+            if (data.rtmp.region === featuredPlayer.rtmp.region && data.rtmp.key === featuredPlayer.rtmp.key && data.sourceName === featuredPlayer.sourceName) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        else {
             return true;
         }
     }
@@ -154,7 +165,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         };
 
         if (checkRTMPForChange(rtmp)) {
-            RTMPFeaturedPlayerReplicant.value = rtmp;
             nodecg.sendMessage(`${server}-rtmp-change`, rtmp);
         }
     }

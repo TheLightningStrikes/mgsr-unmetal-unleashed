@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById("small-player-settings-submit");
     const noPlayersSelected = document.getElementById("no-players-selected");
 
-    const RTMPSmallPlayerSettingsDataReplicant = nodecg.Replicant("rtmp-data-small-player");
+    const RTMPSmallPlayerSettingsDataReplicant = nodecg.Replicant("rtmp-data-small-player", {defaultValue: {}});
 
     const server = 'server';
     const web = 'web';
@@ -81,36 +81,23 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        nodecg.listenFor(`${web}-rtmp-change-result`, (data) => {
+            for (let i = 0; i < currentAmountOfPlayers; i++) {
+                const id = Number(i + 1) + "";
+                if (data.id === id) {
+                    const rtmp = {"id": `${data.id}`, "rtmp": {"region": `${data.rtmp.region}`, "key": `${data.rtmp.key}`}, "sourceName": `${data.sourceName}`};
+                    RTMPSmallPlayerSettingsDataReplicant.value[i] = rtmp;
+                    smallPlayerSettingsReplicant.value[i].rtmp = rtmp.rtmp;
+                    break;
+                }
+            }
+        });
+
         NodeCG.waitForReplicants(smallPlayerSettingsReplicant, runDataReplicant, RTMPSmallPlayerSettingsDataReplicant, mediaSourcesReplicant).then(() => {
             if (smallPlayerSettingsReplicant.value !== undefined) {
                 currentAmountOfPlayers = Object.keys(smallPlayerSettingsReplicant.value).length;
             }
             createPlayers(currentAmountOfPlayers);
-            for (let id in smallPlayerSettingsReplicant.value) {
-                const smallPlayerData = smallPlayerSettingsReplicant.value[id];
-                const playerID = smallPlayerData.id;
-
-                document.getElementById(`player-selection-${playerID}`).value = smallPlayerData.playerSelected;
-
-                document.getElementById(`media-source-selection-${playerID}`).value = smallPlayerData.sourceName;
-
-                if (smallPlayerData.rtmp !== undefined) {
-                    if (smallPlayerData.rtmp.region !== undefined) {
-                        document.getElementById(`rtmp-region-${playerID}`).value = smallPlayerData.rtmp.region;
-                    }
-
-                    if (smallPlayerData.rtmp.key !== undefined) {
-                        document.getElementById(`rtmp-key-${playerID}`).value = smallPlayerData.rtmp.key;
-                    }
-                }
-
-                if (smallPlayerData.currentPB !== undefined) {
-                    document.getElementById(`current-pb-${playerID}`).value = smallPlayerData.currentPB;
-                }
-
-                document.getElementById(`afk-${playerID}`).checked = smallPlayerData.afk;
-                document.getElementById(`open-slot-${playerID}`).checked = smallPlayerData.openSlot;
-            }
 
             runDataReplicant.on("change", (newValue) => {
                 if (newValue !== undefined) {
@@ -130,11 +117,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateValues(id, values) {
-        document.getElementById(`player-selection-${id}`).value = "" + values.playerSelected;
-        document.getElementById(`media-source-selection-${id}`).value = "" + values.sourceName;
-        document.getElementById(`rtmp-region-${id}`).value = "" + values.rtmp.region;
-        document.getElementById(`rtmp-key-${id}`).value = "" + values.rtmp.key;
-        document.getElementById(`current-pb-${id}`).value = "" + values.currentPB;
+        document.getElementById(`player-selection-${id}`).value = `${values.playerSelected}`;
+        document.getElementById(`media-source-selection-${id}`).value = `${values.sourceName}`;
+        document.getElementById(`rtmp-region-${id}`).value = `${values.rtmp.region}`;
+        document.getElementById(`rtmp-key-${id}`).value = `${values.rtmp.key}`;
+        document.getElementById(`current-pb-${id}`).value = `${values.currentPB}`;
         document.getElementById(`afk-${id}`).checked = values.afk;
         document.getElementById(`open-slot-${id}`).checked = values.openSlot;
         updateReplicant();
@@ -223,21 +210,25 @@ window.addEventListener('DOMContentLoaded', () => {
             const RTMPRegion = document.getElementById(`rtmp-region-${id}`).value;
             const RTMPKey = document.getElementById(`rtmp-key-${id}`).value;
 
-            // we use "" to avoid data redundancy
-            rtmp[i] = {"id": "" + id, "rtmp": {"region": "" + RTMPRegion, "key": "" + RTMPKey}, "sourceName": "" + sourceName}
+            //we use "" to avoid data redundancy
+            rtmp[i] = {"id": `${id}`, "rtmp": {"region": `${RTMPRegion}`, "key": `${RTMPKey}`}, "sourceName": `${sourceName}`}
             data[i] = {
-                "id": "" + id,
-                "playerSelected": "" + playerSelected,
-                "rtmp": {"region": "" + RTMPRegion, "key": "" + RTMPKey},
-                "sourceName": "" + sourceName,
-                "currentPB": "" + currentPB,
+                "id": `${id}`,
+                "playerSelected": `${playerSelected}`,
+                "sourceName": `${sourceName}`,
+                "currentPB": `${currentPB}`,
+                "rtmp": smallPlayerSettingsReplicant.value[i].rtmp,
                 "afk": afk,
                 "openSlot": openSlot
             };
 
-            if (checkRTMPForChange(rtmp[i], smallPlayerSettingsReplicant.value[i])) {
-                RTMPSmallPlayerSettingsDataReplicant.value = rtmp[i];
-                nodecg.sendMessage(`${server}-rtmp-change`, rtmp[i]);
+            if(RTMPSmallPlayerSettingsDataReplicant.value !== undefined) {
+                if (checkRTMPForChange(rtmp[i], RTMPSmallPlayerSettingsDataReplicant.value[i])) {
+                    nodecg.sendMessage(`${server}-rtmp-change`, rtmp[i]);
+                }
+            }
+            else {
+                RTMPSmallPlayerSettingsDataReplicant.value[i] = rtmp;
             }
         }
 
@@ -253,6 +244,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 return true;
             }
         }
+        else {
+            return true;
+        }
     }
 
     function createPlayers(amount) {
@@ -261,6 +255,21 @@ window.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < amount; i++) {
             const id = i + 1;
             wrapper.append(createSmallPlayer(id));
+
+            if (smallPlayerSettingsReplicant.value !== undefined && smallPlayerSettingsReplicant.value[id-1] !== undefined) {
+                const smallPlayer = smallPlayerSettingsReplicant.value[id-1];
+                document.getElementById(`player-selection-${id}`).value = `${smallPlayer.playerSelected}`;
+                document.getElementById(`current-pb-${id}`).value.value = `${smallPlayer.currentPB}`;
+                document.getElementById(`afk-${id}`).checked = smallPlayer.afk;
+                document.getElementById(`open-slot-${id}`).checked = smallPlayer.openSlot;
+            }
+
+            if (RTMPSmallPlayerSettingsDataReplicant.value !== undefined && RTMPSmallPlayerSettingsDataReplicant.value[id-1] !== undefined) {
+                const rtmp = RTMPSmallPlayerSettingsDataReplicant.value[id-1];
+                document.getElementById(`media-source-selection-${id}`).value = `${rtmp.sourceName}`;
+                document.getElementById(`rtmp-region-${id}`).value = `${rtmp.rtmp.region}`;
+                document.getElementById(`rtmp-key-${id}`).value = `${rtmp.rtmp.key}`;
+            }
         }
         updateReplicant();
     }

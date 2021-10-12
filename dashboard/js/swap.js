@@ -75,7 +75,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
         options.push(createPlayerOption(featuredPlayerData));
         for (let id in smallPlayerData) {
             const player = smallPlayerData[id];
-            options.push(createPlayerOption(player));
+            if (smallPlayerData[id].playerSelected !== undefined) {
+                options.push(createPlayerOption(player));
+            }
         }
         return options;
     }
