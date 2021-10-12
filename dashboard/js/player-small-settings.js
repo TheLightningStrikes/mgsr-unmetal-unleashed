@@ -210,6 +210,11 @@ window.addEventListener('DOMContentLoaded', () => {
             const RTMPRegion = document.getElementById(`rtmp-region-${id}`).value;
             const RTMPKey = document.getElementById(`rtmp-key-${id}`).value;
 
+            let savedRTMP = {};
+            if (smallPlayerSettingsReplicant.value[i] !== undefined) {
+                savedRTMP = smallPlayerSettingsReplicant.value[i].rtmp;
+            }
+
             //we use "" to avoid data redundancy
             rtmp[i] = {"id": `${id}`, "rtmp": {"region": `${RTMPRegion}`, "key": `${RTMPKey}`}, "sourceName": `${sourceName}`}
             data[i] = {
@@ -217,7 +222,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 "playerSelected": `${playerSelected}`,
                 "sourceName": `${sourceName}`,
                 "currentPB": `${currentPB}`,
-                "rtmp": smallPlayerSettingsReplicant.value[i].rtmp,
+                "rtmp": savedRTMP,
                 "afk": afk,
                 "openSlot": openSlot
             };
