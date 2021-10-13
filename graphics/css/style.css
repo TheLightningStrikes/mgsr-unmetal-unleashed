@@ -132,6 +132,7 @@ body {
     left: 0;
     width:100%;
     height:100%;
+    overflow: hidden;
 }
 
 .player-startup.showing {
@@ -241,6 +242,7 @@ body {
     height: 50px;
     color: white;
     background-color: rgba(0,0,0,100);
+    overflow: hidden;
 }
 
 .small-player-details.showing {
@@ -277,12 +279,12 @@ footer {
 
 @keyframes slide_down {
     from {
-        background-color: rgba(0,0,0,0);
+        width: 0;
         transform: translateY(-216px);
     }
 
     33% {
-        background-color: rgba(0,0,0,100);
+        width: 100%;
         transform: translateY(-216px);
     }
 
@@ -298,12 +300,12 @@ footer {
 
     75% {
         transform: translateY(-216px);
-        background-color: rgba(0,0,0,100);
+        width: 100%;
     }
 
     to {
         transform: translateY(-216px);
-        background-color: rgba(0,0,0,0);
+        width: 0;
     }
 }
 
@@ -318,11 +320,12 @@ footer {
     }
 
     80% {
-        background-color: rgba(0, 0 ,0, 100);
+        width: 100%;
         height: 50px;
     }
     to {
-        background-color: rgba(0, 0 ,0, 0);
+        background-color: rgba(0, 0 ,0, 100);
+        width: 0;
         height: 50px;
     }
 }
