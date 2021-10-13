@@ -9,10 +9,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     const mediaSourcesReplicant = nodecg.Replicant("obs-media-sources");
 
+    const sceneName = nodecg.bundleConfig.sceneName || "UnMetal Unleashed";
+
     const obs = new OBSWebSocket();
 
     const server = 'server';
     const web = 'web';
+
+    document.getElementById("obs-host").value = nodecg.bundleConfig.obsHost || "localhost:4444";
+    document.getElementById("obs-password").value = nodecg.bundleConfig.obsPassword || "";
 
     const resolutions = {
         "featured-player": {
@@ -135,7 +140,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function getMediaSources() {
         if (obs._connected) {
-            obs.send('GetMediaSourcesList').then((data) => {
+            obs.send('GetMediaSourcesList', {sceneName: sceneName}).then((data) => {
                 console.log(data)
 
                 nodecg.sendMessage(`${server}-media-sources`, data);
@@ -155,7 +160,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 }
                 obs.send("SetSourceSettings", {
                     sourceName: sourceName,
-                    sourceSettings: {playlist: [video]}
+                    sourceSettings: {playlist: [video]},
+                    sceneName: sceneName
                 })
                     // .catch((error) => {
                     //     reject(error);
@@ -178,7 +184,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
 
         if (obs._connected) {
-            const getSceneItemInfoPromises = [obs.send("GetSceneItemProperties", {item: source1sourceName}), obs.send("GetSceneItemProperties", {item: source2sourceName})];
+            const getSceneItemInfoPromises = [obs.send("GetSceneItemProperties", {"scene-name": sceneName, item: source1sourceName}), obs.send("GetSceneItemProperties", {"scene-name": sceneName, item: source2sourceName})];
             Promise.all(getSceneItemInfoPromises).then((data) => {
                 const oldSource1Properties = data[0];
                 const oldSource2Properties = data[1];
@@ -198,6 +204,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 const source2Y = oldSource2Properties.position.y;
 
                 const newSource1Properties = {
+                    "scene-name": sceneName,
                     item: source1sourceName,
                     bounds: {
                         x: source2Width,
@@ -209,6 +216,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     }
                 };
                 const newSource2Properties = {
+                    "scene-name": sceneName,
                     item: source2sourceName,
                     bounds: {
                         x: source1Width,
