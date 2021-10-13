@@ -77,14 +77,29 @@ body {
     color: white;
     margin: 0;
     padding: 0;
-    background-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background.png");
     background-color: transparent;
+    font-family: "Calibri", sans-serif;
 }
 
-body.preload {
-    animation-duration: 0s !important;
-    -webkit-animation-duration: 0s !important;
-    transition:background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+.background {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    z-index: -1000;
+}
+
+.background > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1000;
+    opacity: 0;
+}
+
+.background > img.show {
+    opacity: 100;
 }
 
 .statistics {
@@ -120,7 +135,8 @@ body.preload {
 }
 
 .player-startup.showing {
-    animation: ease-in-out slide_along_down 3s;
+    animation: ease-in-out slide_along_down 2s;
+    animation-delay: 0.5s;
 }
 
 .player-startup.hiding {
@@ -129,24 +145,95 @@ body.preload {
     animation-fill-mode: forwards;
 }
 
+.featured-player .AFK-screen {
+    width: 400px;
+    margin-left: 350px;
+    margin-top: 198px;
+}
+
+.featured-player .AFK-screen img {
+    height: 120px;
+    margin-left: 50px;
+    float: left;
+    margin-top: 20px;
+}
+
+.featured-player .AFK-screen p {
+    font-size: 40pt;
+    padding: 20px;
+    width: 100px;
+    float: left;
+}
+
+.small-player .AFK-screen {
+    width: 150px;
+    margin-left: 107px;
+    margin-top: 53px;
+}
+
+.small-player .AFK-screen img {
+    height: 70px;
+    margin-left: 20px;
+    float: left;
+    margin-top: 10px;
+}
+
+.small-player .AFK-screen p {
+    font-size: 20pt;
+    padding: 20px;
+    float: left;
+}
+
 .player-open-slot {
-    opacity: 0;
-    background-color: coral;
+    background-color: rgba(253, 107, 107,0);
     position: absolute;
     top: 0;
     left: 0;
     width:100%;
     height:100%;
+    transition: background-color 1s;
+}
+
+.player-open-slot > div {
+    opacity: 0;
+}
+
+.player-open-slot.show {
+    background-color: rgba(253, 107, 107,0.5);
+    transition: background-color 1s;
+    transition-delay: 1.5s;
+}
+
+.player-open-slot.show > div {
+    opacity: 1;
+    transition: opacity 1s;
+    transition-delay: 1.5s;
 }
 
 .player-afk {
-    opacity: 0;
-    background-color: palegreen;
+    background-color: rgba(0,0,0,0);
     position: absolute;
     top: 0;
     left: 0;
     width:100%;
     height:100%;
+    transition: background-color 1s;
+}
+
+.player-afk > div {
+    opacity: 0;
+}
+
+.player-afk.show {
+    background-color: rgba(0, 0, 0,0.95);
+    transition: background-color 1s;
+    transition-delay: 1.5s;
+}
+
+.player-afk.show > div {
+    opacity: 1;
+    transition: opacity 1s;
+    transition-delay: 1.5s;
 }
 
 .small-player-details {
@@ -190,6 +277,12 @@ footer {
 
 @keyframes slide_down {
     from {
+        background-color: rgba(0,0,0,0);
+        transform: translateY(-216px);
+    }
+
+    33% {
+        background-color: rgba(0,0,0,100);
         transform: translateY(-216px);
     }
 
@@ -225,6 +318,7 @@ footer {
     }
 
     80% {
+        background-color: rgba(0, 0 ,0, 100);
         height: 50px;
     }
     to {
@@ -242,7 +336,7 @@ footer {
         height: 216px;
     }
     70% {
-        opacity: 50;
+        background-color: rgba(0, 0 ,0, 50);
     }
 
     to {

@@ -71,8 +71,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
                 togglePlaceholder(smallPlayerData.id, "afk", smallPlayerData.afk);
                 togglePlaceholder(smallPlayerData.id, "open-slot", smallPlayerData.openSlot);
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -80,36 +79,50 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function togglePlaceholder(id, name, toggle) {
         const placeholder = document.getElementById(`player-${name}-${id}`);
-        if(toggle) {
-            placeholder.setAttribute("style", "opacity:100;");
-        }
-        else {
-            placeholder.setAttribute("style", "");
+        if (toggle) {
+            placeholder.classList.add("show");
+        } else {
+            placeholder.classList.remove("show");
         }
     }
 
     function adjustPlayers(oldValue, newValue, playAnimations) {
         console.log(oldValue, newValue);
+        setBackground(oldValue, newValue, playAnimations);
         if (oldValue > newValue) {
-            for (let i = newValue+1; i <= oldValue; i++) {
+            for (let i = newValue + 1; i <= oldValue; i++) {
                 if (playAnimations) {
                     toggleSmallPlayer(i, true);
                     document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
-                }
-                else {
+                } else {
                     document.getElementById(`small-player-${i}-details`).classList.add("hidden");
                 }
             }
-        }
-        else if (oldValue < newValue) {
-            for (let i = (oldValue+1); i <= newValue; i++) {
+        } else if (oldValue < newValue) {
+            for (let i = (oldValue + 1); i <= newValue; i++) {
                 if (playAnimations) {
                     document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
                     toggleSmallPlayer(i, false);
-                }
-                else {
+                } else {
                     document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
                 }
+            }
+        }
+    }
+
+    function setBackground(oldValue, newValue, playAnimations) {
+        if (playAnimations) {
+            setTimeout(function () {
+                document.getElementById(`background-${newValue}`).classList.add("show");
+                if (newValue !== oldValue) {
+                    document.getElementById(`background-${oldValue}`).classList.remove("show");
+                }
+            }, 1500);
+        }
+        else {
+            document.getElementById(`background-${newValue}`).classList.add("show");
+            if (newValue !== oldValue) {
+                document.getElementById(`background-${oldValue}`).classList.remove("show");
             }
         }
     }
@@ -117,17 +130,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function toggleSmallPlayer(id, toggle) {
         const smallPlayerDetails = document.getElementById(`small-player-${id}-details`)
         const startupOverlay = document.getElementById(`player-startup-${id}`)
-        if(toggle) {
+        if (toggle) {
             smallPlayerDetails.classList.remove("showing");
             startupOverlay.classList.remove("showing");
             smallPlayerDetails.classList.add("hiding");
             startupOverlay.classList.add("hiding");
-        }
-        else {
+            togglePlaceholder(id,"afk",false);
+            togglePlaceholder(id,"open-slot",false);
+
+        } else {
             smallPlayerDetails.classList.remove("hiding");
             startupOverlay.classList.remove("hiding");
             smallPlayerDetails.classList.add("showing");
             startupOverlay.classList.add("showing");
+            togglePlaceholder(id,"afk",true);
+            togglePlaceholder(id,"open-slot",true);
         }
     }
 
@@ -151,7 +168,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const wrapper = document.getElementById("small-player-settings-wrapper");
         wrapper.innerText = "";
         for (let i = 0; i < maxAmountOfPlayers; i++) {
-            const id = i+1;
+            const id = i + 1;
             wrapper.append(createSmallPlayer(id));
         }
     }
@@ -163,6 +180,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         const smallPlayerPlaceholder = createSmallPlayerPlaceholder(id, "placeholder");
         const smallPlayerAFK = createSmallPlayerPlaceholder(id, "afk");
+        smallPlayerAFK.append(createAFKElements());
         const smallPlayerStartup = createSmallPlayerPlaceholder(id, "startup");
         const smallPlayerOpenSlot = createSmallPlayerPlaceholder(id, "open-slot");
         const smallPlayerDetails = createSmallPlayerDetails(id);
@@ -212,5 +230,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
         img.setAttribute("src", "/bundles/mgsr-unmetal-unleashed/graphics/img/TwitchGlitchWhite.svg");
         img.setAttribute("id", id);
         return img;
+    }
+
+    function createAFKElements() {
+        const div = document.createElement("div");
+        div.classList.add("AFK-screen");
+
+        const span = document.createElement("p");
+        span.textContent = "AFK";
+
+        const img = document.createElement("img");
+        img.src = "/bundles/mgsr-unmetal-unleashed/graphics/img/guard-box-5s.gif";
+        img.alt = "guard-box";
+
+        div.append(span);
+        div.append(img);
+        return div;
     }
 });
