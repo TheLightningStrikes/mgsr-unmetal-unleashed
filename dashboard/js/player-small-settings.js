@@ -10,26 +10,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const server = 'server';
     const web = 'web';
-    let currentAmountOfPlayers = 0;
+    const maxAmountOfPlayers = 6;
 
     initializeValues();
 
     function initializeValues() {
-        nodecg.listenFor(`${web}-number-of-players`, (newValue) => {
-            currentAmountOfPlayers = newValue;
-            if (newValue > 0) {
-                noPlayersSelected.setAttribute("style", "display: none;");
-                submitButton.setAttribute("style", "display: inline-block;");
-                createPlayers(newValue);
-            } else {
-                noPlayersSelected.setAttribute("style", "display: inline-block;");
-                submitButton.setAttribute("style", "display: none;");
-                createPlayers(newValue);
-            }
-        });
-
         nodecg.listenFor(`${web}-media-sources`, (data) => {
-            for (let i = 0; i < currentAmountOfPlayers; i++) {
+            for (let i = 0; i < maxAmountOfPlayers; i++) {
                 const id = i + 1;
                 const sourceSelection = document.getElementById(`media-source-selection-${id}`);
                 sourceSelection.innerHTML = "";
@@ -43,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         nodecg.listenFor(`${web}-obs-status`, (status) => {
             if (status.connected) {
-                for (let i = 0; i < currentAmountOfPlayers; i++) {
+                for (let i = 0; i < maxAmountOfPlayers; i++) {
                     const id = i + 1;
                     const sourceSelection = document.getElementById(`media-source-selection-${id}`);
                     const rtmpRegion = document.getElementById(`rtmp-region-${id}`);
@@ -54,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     rtmpKey.disabled = false;
                 }
             } else {
-                for (let i = 0; i < currentAmountOfPlayers; i++) {
+                for (let i = 0; i < maxAmountOfPlayers; i++) {
                     const id = i + 1;
                     const sourceSelection = document.getElementById(`media-source-selection-${id}`);
                     const rtmpRegion = document.getElementById(`rtmp-region-${id}`);
@@ -69,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         nodecg.listenFor(`${web}-swap-video-source-result`, (data) => {
             if (data !== undefined) {
-                for (let i = 0; i < currentAmountOfPlayers; i++) {
+                for (let i = 0; i < maxAmountOfPlayers; i++) {
                     const id = Number(i + 1) + "";
                     if (data.source1.id === id) {
                         updateValues(id, data.source2.playerData);
@@ -82,7 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         nodecg.listenFor(`${web}-rtmp-change-result`, (data) => {
-            for (let i = 0; i < currentAmountOfPlayers; i++) {
+            for (let i = 0; i < maxAmountOfPlayers; i++) {
                 const id = Number(i + 1) + "";
                 if (data.id === id) {
                     const rtmp = {"id": `${data.id}`, "rtmp": {"region": `${data.rtmp.region}`, "key": `${data.rtmp.key}`}, "sourceName": `${data.sourceName}`};
@@ -94,14 +81,11 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         NodeCG.waitForReplicants(smallPlayerSettingsReplicant, runDataReplicant, RTMPSmallPlayerSettingsDataReplicant, mediaSourcesReplicant).then(() => {
-            if (smallPlayerSettingsReplicant.value !== undefined) {
-                currentAmountOfPlayers = Object.keys(smallPlayerSettingsReplicant.value).length;
-            }
-            createPlayers(currentAmountOfPlayers);
+            createPlayers(maxAmountOfPlayers);
 
             runDataReplicant.on("change", (newValue) => {
                 if (newValue !== undefined) {
-                    for (let i = 0; i < currentAmountOfPlayers; i++) {
+                    for (let i = 0; i < maxAmountOfPlayers; i++) {
                         const id = i + 1;
 
                         const playerSelection = document.getElementById(`player-selection-${id}`);
@@ -199,7 +183,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const data = {};
         const rtmp = {};
 
-        for (let i = 0; i < currentAmountOfPlayers; i++) {
+        for (let i = 0; i < maxAmountOfPlayers; i++) {
             const id = i + 1;
             const playerSelected = document.getElementById(`player-selection-${id}`).value;
             const currentPB = document.getElementById(`current-pb-${id}`).value;

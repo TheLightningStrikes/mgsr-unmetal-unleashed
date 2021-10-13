@@ -81,6 +81,12 @@ body {
     background-color: transparent;
 }
 
+body.preload {
+    animation-duration: 0s !important;
+    -webkit-animation-duration: 0s !important;
+    transition:background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+}
+
 .statistics {
     width: 100%;
     height: 356px;
@@ -102,6 +108,25 @@ body {
     width: 384px;
     height: 216px;
     position: relative;
+}
+
+.player-startup {
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+}
+
+.player-startup.showing {
+    animation: ease-in-out slide_along_down 3s;
+}
+
+.player-startup.hiding {
+    background-color: rgba(0,0,0,0);
+    animation: ease-in-out slide_along_up 3s;
+    animation-fill-mode: forwards;
 }
 
 .player-open-slot {
@@ -127,7 +152,29 @@ body {
 .small-player-details {
     width: 384px;
     height: 50px;
-    background-color: black;
+    color: white;
+    background-color: rgba(0,0,0,100);
+}
+
+.small-player-details.showing {
+    animation: slide_down 1.5s ease-in-out;
+}
+
+.small-player-details.hidden {
+    color: transparent;
+    background-color: rgba(0,0,0,0);
+}
+
+.small-player-details.hiding {
+    color: transparent;
+    animation: slide_up 2s ease-in-out;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+}
+
+.small-player-details.hidden .twitch-logo,
+.small-player-details.hiding .twitch-logo {
+    display: none;
 }
 
 footer {
@@ -141,24 +188,64 @@ footer {
     font-size: 42px;
 }
 
-/*.horizontal-divider {*/
-/*    height: 14px;*/
-/*    width: 100%;*/
-/*    background-color: grey;*/
-/*}*/
+@keyframes slide_down {
+    from {
+        transform: translateY(-216px);
+    }
 
-/*.vertical-divider {*/
-/*    width: 14px;*/
-/*    height: 216px;*/
-/*    background-color: grey;*/
-/*    float: left;*/
-/*    display: inline-block;*/
-/*}*/
+    to {
+        transform: translateY(0);
+    }
+}
 
-/*.featured-player-vertical-divider {*/
-/*    width: 38px;*/
-/*    height: 626px;*/
-/*    background-color: grey;*/
-/*    float: left;*/
-/*    display: inline-block;*/
-/*}*/
+@keyframes slide_up {
+    from {
+        transform: translateY(0);
+    }
+
+    75% {
+        transform: translateY(-216px);
+        background-color: rgba(0,0,0,100);
+    }
+
+    to {
+        transform: translateY(-216px);
+        background-color: rgba(0,0,0,0);
+    }
+}
+
+@keyframes slide_along_up {
+    from {
+        background-color: rgba(0, 0 ,0, 0);
+        height: 266px;
+    }
+    33% {
+        background-color: rgba(0, 0 ,0, 100);
+        height: 266px;
+    }
+
+    80% {
+        height: 50px;
+    }
+    to {
+        background-color: rgba(0, 0 ,0, 0);
+        height: 50px;
+    }
+}
+
+@keyframes slide_along_down {
+    from {
+        background-color: rgba(0, 0 ,0, 100);
+        height: 0;
+    }
+    40% {
+        height: 216px;
+    }
+    70% {
+        opacity: 50;
+    }
+
+    to {
+        background-color: rgba(0, 0 ,0, 0);
+    }
+}

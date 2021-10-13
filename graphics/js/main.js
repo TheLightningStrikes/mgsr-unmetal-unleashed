@@ -9,17 +9,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const server = 'server';
     const web = 'web';
 
+    const maxAmountOfPlayers = 6;
+
     let currentAmountOfPlayers = 0;
 
     NodeCG.waitForReplicants(featuredPlayerSettingsReplicant, smallPlayerSettingsReplicant, runDataReplicant, currentAmountOfPlayersReplicant).then(() => {
         currentAmountOfPlayers = currentAmountOfPlayersReplicant.value;
-        createPlayers(currentAmountOfPlayers);
+        createPlayers(maxAmountOfPlayers);
+        adjustPlayers(maxAmountOfPlayers, Number(currentAmountOfPlayers), false);
+        insertFeaturedPlayerData(featuredPlayerSettingsReplicant.value);
+        insertSmallPlayerData(smallPlayerSettingsReplicant.value);
 
         nodecg.listenFor(`${web}-number-of-players`, (newValue) => {
             console.log(`${newValue} players received`);
+            adjustPlayers(Number(currentAmountOfPlayers), Number(newValue), true);
             currentAmountOfPlayers = newValue;
             currentAmountOfPlayersReplicant.value = newValue;
-            createPlayers(newValue);
             insertSmallPlayerData(smallPlayerSettingsReplicant.value);
         });
 
@@ -83,6 +88,49 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
+    function adjustPlayers(oldValue, newValue, playAnimations) {
+        console.log(oldValue, newValue);
+        if (oldValue > newValue) {
+            for (let i = newValue+1; i <= oldValue; i++) {
+                if (playAnimations) {
+                    toggleSmallPlayer(i, true);
+                    document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
+                }
+                else {
+                    document.getElementById(`small-player-${i}-details`).classList.add("hidden");
+                }
+            }
+        }
+        else if (oldValue < newValue) {
+            for (let i = (oldValue+1); i <= newValue; i++) {
+                if (playAnimations) {
+                    document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
+                    toggleSmallPlayer(i, false);
+                }
+                else {
+                    document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
+                }
+            }
+        }
+    }
+
+    function toggleSmallPlayer(id, toggle) {
+        const smallPlayerDetails = document.getElementById(`small-player-${id}-details`)
+        const startupOverlay = document.getElementById(`player-startup-${id}`)
+        if(toggle) {
+            smallPlayerDetails.classList.remove("showing");
+            startupOverlay.classList.remove("showing");
+            smallPlayerDetails.classList.add("hiding");
+            startupOverlay.classList.add("hiding");
+        }
+        else {
+            smallPlayerDetails.classList.remove("hiding");
+            startupOverlay.classList.remove("hiding");
+            smallPlayerDetails.classList.add("showing");
+            startupOverlay.classList.add("showing");
+        }
+    }
+
     function insertRunData(data, name, id) {
         if (data !== undefined) {
             const teams = data.teams;
@@ -99,18 +147,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
-    function createPlayers(amount) {
+    function createPlayers(maxAmountOfPlayers) {
         const wrapper = document.getElementById("small-player-settings-wrapper");
         wrapper.innerText = "";
-        for (let i = 0; i < amount; i++) {
+        for (let i = 0; i < maxAmountOfPlayers; i++) {
             const id = i+1;
             wrapper.append(createSmallPlayer(id));
-            if (i % 2 === 0) {
-                createDivider("vertical-divider");
-            }
-            else {
-                createDivider("horizontal-divider");
-            }
         }
     }
 
@@ -121,8 +163,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         const smallPlayerPlaceholder = createSmallPlayerPlaceholder(id, "placeholder");
         const smallPlayerAFK = createSmallPlayerPlaceholder(id, "afk");
+        const smallPlayerStartup = createSmallPlayerPlaceholder(id, "startup");
         const smallPlayerOpenSlot = createSmallPlayerPlaceholder(id, "open-slot");
-        const smallPlayerDetails = createSmallPlayerDetails();
+        const smallPlayerDetails = createSmallPlayerDetails(id);
 
         const twitchLogo = createTwitchLogo(`twitch-logo-${id}`);
         const playerName = createSpan(`player-name-${id}`, "player-name");
@@ -134,17 +177,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         smallPlayerPlaceholder.appendChild(smallPlayerAFK);
         smallPlayerPlaceholder.appendChild(smallPlayerOpenSlot);
+        smallPlayerPlaceholder.appendChild(smallPlayerStartup);
 
         smallPlayerWrapper.appendChild(smallPlayerPlaceholder);
         smallPlayerWrapper.appendChild(smallPlayerDetails);
 
         return smallPlayerWrapper;
-    }
-
-    function createDivider(cssClass) {
-        const divider = document.createElement("div");
-        divider.setAttribute("class", cssClass);
-        return divider;
     }
 
     function createSmallPlayerPlaceholder(id, name) {
@@ -154,9 +192,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return placeholder;
     }
 
-    function createSmallPlayerDetails() {
+    function createSmallPlayerDetails(id) {
         const details = document.createElement("div");
         details.setAttribute("class", `small-player-details`);
+        details.setAttribute("id", `small-player-${id}-details`);
         return details;
     }
 
