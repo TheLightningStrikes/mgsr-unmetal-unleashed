@@ -5,6 +5,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const source1 = document.getElementById("source-1");
     const source2 = document.getElementById("source-2");
 
+    const source1mute = document.getElementById("mute-source1");
+    const source1unMute = document.getElementById("unmute-source1");
+    const source2mute = document.getElementById("mute-source2");
+    const source2unMute = document.getElementById("unmute-source2");
+
+    source1mute.onclick = function() {onCheckboxClick(`source1`, "mute", source1mute.checked)};
+    source1unMute.onclick = function() {onCheckboxClick(`source1`, "unmute", source1unMute.checked)};
+    source2mute.onclick = function() {onCheckboxClick(`source2`, "mute", source2mute.checked)};
+    source2unMute.onclick = function() {onCheckboxClick(`source2`, "unmute", source2unMute.checked)};
+
     const server = 'server';
     const web = 'web';
 
@@ -18,9 +28,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
             if (status.connected) {
                 source1.disabled = false;
                 source2.disabled = false;
+                source1mute.disabled = false;
+                source1unMute.disabled = false;
+                source2mute.disabled = false;
+                source2unMute.disabled = false;
             } else {
                 source1.disabled = true;
                 source2.disabled = true;
+                source1mute.disabled = true;
+                source1unMute.disabled = true;
+                source2mute.disabled = true;
+                source2unMute.disabled = true;
             }
         });
 
@@ -99,24 +117,41 @@ window.addEventListener('DOMContentLoaded', (event) => {
         source1playerSelected = source1.value;
         source2playerSelected = source2.value;
 
+        let muteSettingsSource1 = createMuteSettings(source1mute.checked, source1unMute.checked);
+        let muteSettingsSource2 = createMuteSettings(source2mute.checked, source2unMute.checked);
+
         const swapData = {
             "source1": {
                 "sourceName": player1.sourceName,
                 "playerName": player1.playerSelected,
                 "id": player1.id,
-                "playerData": player1
+                "playerData": player1,
+                "muteSettings": muteSettingsSource1
             },
             "source2": {
                 "sourceName": player2.sourceName,
                 "playerName": player2.playerSelected,
                 "id": player2.id,
-                "playerData": player2
+                "playerData": player2,
+                "muteSettings": muteSettingsSource2
             }
         };
         nodecg.sendMessage(`${server}-swap-video-source`, swapData);
 
         e.preventDefault();
     };
+
+    function createMuteSettings(mute, unmute) {
+        if (mute === true && unmute === false) {
+            return {change: true, value: true};
+        }
+        else if (mute === false && unmute === true) {
+            return {change: true, value: false};
+        }
+        else {
+            return {change: false, value: false};
+        }
+    }
 
     function findPlayerByPlayerName(id) {
         if (playerFeaturedReplicant.value.id === id) {
@@ -129,6 +164,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     return Object.assign({}, player);
                 }
             }
+        }
+    }
+
+    function onCheckboxClick(id, checkboxName, checked) {
+        const muteCheckbox = document.getElementById(`mute-${id}`);
+        const unmuteCheckbox = document.getElementById(`unmute-${id}`);
+        if (checked) {
+            switch (checkboxName) {
+                case `mute`:
+                    muteCheckbox.checked = true;
+                    unmuteCheckbox.checked = false;
+                    break;
+                case `unmute`:
+                    muteCheckbox.checked = false;
+                    unmuteCheckbox.checked = true;
+                    break;
+            }
+        } else {
+            document.getElementById(`${checkboxName}-${id}`).checked = false;
         }
     }
 });

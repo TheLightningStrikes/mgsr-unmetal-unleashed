@@ -113,3 +113,11 @@ label.rtmp > select, label.rtmp > input {
 .submitButton.disconnect:active {
     background-color: #860e0e;
 }
+.mute-checkboxes {
+    width: 100%;
+}
+.mute-checkboxes > label {
+    float: left;
+    display: inline-block;
+    width: 50%;
+}

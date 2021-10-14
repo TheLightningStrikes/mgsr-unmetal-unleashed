@@ -129,6 +129,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
             // obs.send("GetSceneItemProperties", {item: "VLC Video Source"}).then((data) => {
             //     console.log("GetSceneItemProperties", data)
             // });
+            // obs.send("SetMute", {source: "VLC Video Source", mute: true}).then((data) => {
+            //     console.log("SetMute", data)
+            // });
         }).catch((error) => {
             console.error(error);
 
@@ -173,6 +176,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 reject({connected: false});
             }
         });
+    }
+
+    function muteSource(source, mute) {
+        return obs.send("SetMute", {source: source, mute: mute});
     }
 
     function swapMediaSource(source1, source2) {
@@ -228,8 +235,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     }
                 };
 
+                console.log(source1.muteSettings);
+                console.log(source2.muteSettings);
+
                 console.log(newSource1Properties);
                 console.log(newSource2Properties);
+
+                const muteSourcePromises = []
+                if (source1.muteSettings.change === true) {
+                    muteSourcePromises.push(muteSource(source1sourceName, source1.muteSettings.value));
+                }
+
+                if (source2.muteSettings.change === true) {
+                    muteSourcePromises.push(muteSource(source2sourceName, source2.muteSettings.value));
+                }
 
                 const sendSceneItemInfoPromises = [obs.send("SetSceneItemProperties", newSource1Properties), obs.send("SetSceneItemProperties", newSource2Properties)];
                 Promise.all(sendSceneItemInfoPromises).then((data) => {
@@ -238,6 +257,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 }).catch((error) => {
                     console.error(error);
                 });
+
+                Promise.all(muteSourcePromises).then((data) => {
+                    console.log(data);
+                }).catch((error) => {
+                    console.error(error);
+                })
             });
         }
     }
