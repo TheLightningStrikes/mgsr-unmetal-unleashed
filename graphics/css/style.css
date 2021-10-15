@@ -1,3 +1,8 @@
+@font-face {
+    font-family: BebasKai;
+    src: url(../font/BebasKai.otf);
+}
+
 .large-player {
     width: 100%;
     height: 654px;
@@ -18,7 +23,9 @@
 .featured-player-details {
     width: 1024px;
     height: 50px;
-    background-color: black;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    color: #340085;
 }
 
 .twitch-logo {
@@ -43,9 +50,8 @@
     float: left;
     padding-right: 8px;
     padding-top: 8px;
-    font-size: 18pt;
+    font-size: 20pt;
     text-align: right;
-    font-family: "alarm clock", sans-serif;
 }
 
 .featured-player-details .player-name {
@@ -74,11 +80,11 @@
 body {
     width: 1920px;
     height: 1080px;
-    color: white;
+    color: #340085;
     margin: 0;
     padding: 0;
     background-color: transparent;
-    font-family: "Calibri", sans-serif;
+    font-family: BebasKai, sans-serif;
 }
 
 .background {
@@ -214,6 +220,7 @@ body {
 .player-afk {
     background-color: rgba(0,0,0,0);
     position: absolute;
+    color: white;
     top: 0;
     left: 0;
     width:100%;
@@ -240,9 +247,10 @@ body {
 .small-player-details {
     width: 384px;
     height: 50px;
-    color: white;
-    background-color: rgba(0,0,0,100);
+    color: #340085;
     overflow: hidden;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
 }
 
 .small-player-details.showing {
@@ -272,9 +280,25 @@ footer {
     bottom: 0;
     width: 100%;
     height: 60px;
-    background-color: black;
-    text-align: center;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
     font-size: 42px;
+    color: #340085;
+}
+
+footer > img {
+    width: 300px;
+    margin-top: -285px;
+    float: left;
+}
+
+footer > span {
+    width: 790px;
+    text-align: center;
+    display: inline-block;
+    float: left;
+    height: 60px;
+    padding: 5px;
 }
 
 @keyframes slide_down {

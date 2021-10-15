@@ -227,7 +227,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function createTwitchLogo(id) {
         const img = document.createElement("img");
         img.setAttribute("class", "twitch-logo");
-        img.setAttribute("src", "/bundles/mgsr-unmetal-unleashed/graphics/img/TwitchGlitchWhite.svg");
+        img.setAttribute("src", "/bundles/mgsr-unmetal-unleashed/graphics/img/TwitchGlitch.svg");
         img.setAttribute("id", id);
         return img;
     }

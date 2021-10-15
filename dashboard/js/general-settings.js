@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const resolutions = {
         "featured-player": {
             "height": "1024",
-            "width": "516"
+            "width": "576"
         },
         "small-player": {
             "height": "384",
@@ -40,23 +40,23 @@ window.addEventListener('DOMContentLoaded', (event) => {
             "y": "38"
         },
         "small-player-2": {
-            "x": "1330",
+            "x": "1498",
             "y": "38"
         },
         "small-player-3": {
             "x": "1100",
-            "y": "422"
+            "y": "318"
         },
         "small-player-4": {
-            "x": "1330",
-            "y": "422"
+            "x": "1498",
+            "y": "318"
         },
         "small-player-5": {
             "x": "1100",
             "y": "598"
         },
         "small-player-6": {
-            "x": "1330",
+            "x": "1498",
             "y": "598"
         },
     }
