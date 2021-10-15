@@ -128,10 +128,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function togglePlaceholder(id, name, toggle) {
         const placeholder = document.getElementById(`player-${name}-${id}`);
+        console.log(id);
         if (toggle) {
             placeholder.classList.add("show");
+            if (name === "open-slot") {
+                document.getElementById(`${id}-player-details-wrapper`).classList.add("hide-text");
+                document.getElementById(`${id}-player-details-wrapper`).classList.remove("show-text");
+            }
         } else {
             placeholder.classList.remove("show");
+            if (name === "open-slot") {
+                document.getElementById(`${id}-player-details-wrapper`).classList.remove("hide-text");
+                document.getElementById(`${id}-player-details-wrapper`).classList.add("show-text");
+            }
         }
     }
 
@@ -142,18 +151,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
             for (let i = newValue + 1; i <= oldValue; i++) {
                 if (playAnimations) {
                     toggleSmallPlayer(i, true);
-                    document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
+                    document.getElementById(`${i}-player-details`).classList.remove("hidden");
                 } else {
-                    document.getElementById(`small-player-${i}-details`).classList.add("hidden");
+                    document.getElementById(`${i}-player-details`).classList.add("hidden");
                 }
             }
         } else if (oldValue < newValue) {
             for (let i = (oldValue + 1); i <= newValue; i++) {
                 if (playAnimations) {
-                    document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
+                    document.getElementById(`${i}-player-details`).classList.remove("hidden");
                     toggleSmallPlayer(i, false);
                 } else {
-                    document.getElementById(`small-player-${i}-details`).classList.remove("hidden");
+                    document.getElementById(`${i}-player-details`).classList.remove("hidden");
                 }
             }
         }
@@ -177,7 +186,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function toggleSmallPlayer(id, toggle) {
-        const smallPlayerDetails = document.getElementById(`small-player-${id}-details`)
+        const smallPlayerDetails = document.getElementById(`${id}-player-details`)
         const startupOverlay = document.getElementById(`player-startup-${id}`)
         if (toggle) {
             smallPlayerDetails.classList.remove("showing");
@@ -226,7 +235,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function createSmallPlayer(id) {
-        const smallPlayerWrapper = document.createElement("div")
+        const smallPlayerWrapper = document.createElement("div");
         smallPlayerWrapper.setAttribute("id", `small-player-${id}`);
         smallPlayerWrapper.setAttribute("class", `row`);
 
@@ -239,13 +248,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const smallPlayerSwap = createSmallPlayerPlaceholder(id, "swap");
         const smallPlayerDetails = createSmallPlayerDetails(id);
 
+        const smallPlayerDetailsWrapper = document.createElement("div");
+        smallPlayerDetailsWrapper.setAttribute("id", `${id}-player-details-wrapper`)
         const twitchLogo = createTwitchLogo(`twitch-logo-${id}`);
         const playerName = createSpan(`player-name-${id}`, "player-name");
         const currentPB = createSpan(`player-pb-${id}`, "player-pb");
 
-        smallPlayerDetails.append(twitchLogo);
-        smallPlayerDetails.append(playerName);
-        smallPlayerDetails.append(currentPB);
+        smallPlayerDetailsWrapper.append(twitchLogo);
+        smallPlayerDetailsWrapper.append(playerName);
+        smallPlayerDetailsWrapper.append(currentPB);
+
+        smallPlayerDetails.append(smallPlayerDetailsWrapper);
 
         smallPlayerPlaceholder.appendChild(smallPlayerAFK);
         smallPlayerPlaceholder.appendChild(smallPlayerOpenSlot);
@@ -268,7 +281,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function createSmallPlayerDetails(id) {
         const details = document.createElement("div");
         details.setAttribute("class", `small-player-details`);
-        details.setAttribute("id", `small-player-${id}-details`);
+        details.setAttribute("id", `${id}-player-details`);
         return details;
     }
 
