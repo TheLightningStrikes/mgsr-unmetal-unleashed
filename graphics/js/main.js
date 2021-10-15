@@ -1,9 +1,8 @@
 window.addEventListener('DOMContentLoaded', (event) => {
     const featuredPlayerSettingsReplicant = nodecg.Replicant("player-featured-settings");
     const smallPlayerSettingsReplicant = nodecg.Replicant("player-small-settings");
-
+    const statisticsReplicant = nodecg.Replicant("statistics");
     const runDataReplicant = nodecg.Replicant('runDataActiveRun', 'nodecg-speedcontrol');
-
     const currentAmountOfPlayersReplicant = nodecg.Replicant("current-amount-of-players");
 
     const server = 'server';
@@ -13,8 +12,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     let currentAmountOfPlayers = 0;
     const commentators = document.getElementById("commentators");
+    const recordHolder = document.getElementById("record-holder");
+    const recordTime = document.getElementById("record-time");
 
-    NodeCG.waitForReplicants(featuredPlayerSettingsReplicant, smallPlayerSettingsReplicant, runDataReplicant, currentAmountOfPlayersReplicant).then(() => {
+    NodeCG.waitForReplicants(featuredPlayerSettingsReplicant, smallPlayerSettingsReplicant, runDataReplicant, statisticsReplicant, currentAmountOfPlayersReplicant).then(() => {
         currentAmountOfPlayers = currentAmountOfPlayersReplicant.value;
         createPlayers(maxAmountOfPlayers);
         adjustPlayers(maxAmountOfPlayers, Number(currentAmountOfPlayers), false);
@@ -27,7 +28,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             currentAmountOfPlayers = newValue;
             currentAmountOfPlayersReplicant.value = newValue;
             insertSmallPlayerData(smallPlayerSettingsReplicant.value);
-        })
+        });
 
         nodecg.listenFor(`${web}-swap-video-animation`, (swap) => {
             document.getElementById(`player-swap-${swap.source1.id}`).classList.add("show");
@@ -37,7 +38,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 document.getElementById(`player-swap-${swap.source1.id}`).classList.remove("show");
                 document.getElementById(`player-swap-${swap.source2.id}`).classList.remove("show");
             }, 6000);
-        })
+        });
+
+        statisticsReplicant.on("change", (newValue) => {
+            if (newValue !== undefined) {
+                if (recordHolder.textContent !== newValue.recordHolder) {
+                    changeText("record-holder", "record-holder", newValue.recordHolder);
+                }
+                if (recordTime.textContent !== newValue.recordTime) {
+                    changeText("record-time", "record-time", newValue.recordTime);
+                }
+            }
+        });
 
         smallPlayerSettingsReplicant.on("change", (newValue) => {
             if (newValue !== "" && newValue) {

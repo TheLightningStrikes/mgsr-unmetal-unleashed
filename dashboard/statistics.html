@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="js/statistics.js"></script>
     <link href="css/panel.css" rel="stylesheet">
     <title>Statistics Panel</title>
 </head>
 <body>
     <form>
-        <label for="current-record">Current Record</label>
-        <input type="text" id="current-record" name="current-record" placeholder="Time">
-        <label for="by-runner">Best Possible Time</label>
-        <input type="text" id="by-runner" name="by-runner" placeholder="Runner Name">
-        <input class="submitButton" type="submit" value="Update">
+        <label for="record-holder">Current Record Holder</label>
+        <input type="text" id="record-holder" name="record-holder" placeholder="Runner Name">
+        <label for="record-time">Current Record Time</label>
+        <input type="text" id="record-time" name="record-time" placeholder="Time">
+        <input class="submitButton" id="statistics-submit" type="button" value="Update">
     </form>
 </body>
 </html>
