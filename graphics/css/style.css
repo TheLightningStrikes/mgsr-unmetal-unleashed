@@ -12,6 +12,7 @@
     width: 1024px;
     height: 576px;
     position: relative;
+    overflow: hidden;
 }
 
 .featured-player-wrapper {
@@ -39,9 +40,9 @@
     height: 42px;
     display: inline-block;
     float: left;
-    font-size: 18pt;
+    font-size: 20pt;
     padding-left: 8px;
-    padding-top: 8px;
+    padding-top: 9px;
 }
 
 .player-pb {
@@ -49,7 +50,7 @@
     display: inline-block;
     float: left;
     padding-right: 8px;
-    padding-top: 8px;
+    padding-top: 9px;
     font-size: 20pt;
     text-align: right;
 }
@@ -87,11 +88,59 @@ body {
     font-family: BebasKai, sans-serif;
 }
 
+.commentators {
+    width: calc(100% - 50px);
+    text-align: right;
+    font-size: 21pt;
+    height: 30px;
+    padding: 5px;
+    color: white;
+    margin-top: -22px;
+}
+
+.logo-reel {
+    margin-top: 20px;
+    width: 300px;
+    position: relative;
+    margin-left: 555px;
+}
+
+.logo-reel > img {
+    width: 300px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.logo-reel > img.one {
+    animation: show-and-hide 40s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.logo-reel > img.two {
+    animation: show-and-hide 40s ease-in-out infinite;;
+    animation-delay: 10s;
+    margin-top: 50px;
+}
+
+.logo-reel > img.three {
+    animation: show-and-hide 40s ease-in-out infinite;;
+    animation-delay: 20s;
+    margin-top: 25px;
+}
+
+.logo-reel > img.four {
+    animation: show-and-hide 40s ease-in-out infinite;;
+    animation-delay: 30s;
+    margin-top: 30px;
+}
+
 .background {
     position: absolute;
     width: 1920px;
     height: 1080px;
-    z-index: -1000;
+    z-index: -50;
 }
 
 .background > img {
@@ -129,6 +178,11 @@ body {
     width: 384px;
     height: 216px;
     position: relative;
+    overflow: hidden;
+}
+
+.small-player-wrapper {
+    display: inline-block;
 }
 
 .player-startup {
@@ -290,15 +344,67 @@ footer > img {
     width: 300px;
     margin-top: -285px;
     float: left;
+    margin-left: 70px;
 }
 
 footer > span {
-    width: 790px;
+    width: 765px;
     text-align: center;
     display: inline-block;
     float: left;
     height: 60px;
     padding: 5px;
+}
+
+.statistics {
+    height: 70px;
+    width: 364px;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    color: #340085;
+    padding: 10px;
+    font-size: 21pt;
+    float: left;
+    margin-right: 14px;
+    margin-top: 15px;
+}
+
+.statistics > span {
+    width: 100%;
+    display: inline-block;
+}
+
+.player-swap {
+    background-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/player-swap-animation.gif");
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    z-index: -100;
+}
+
+.player-swap.show {
+    display: inline;
+}
+
+.featured-player .player-swap {
+    background-size: 1024px;
+    animation: player-swap-featured 6s ease-in-out;
+}
+
+.small-player .player-swap {
+    background-size: 384px;
+    animation: player-swap-small 6s ease-in-out;
+}
+
+.hide-text {
+    animation: ease-in-out hide-text 1.5s forwards;
+}
+
+.show-text {
+    animation: ease-in-out show-text 1.5s forwards;
 }
 
 @keyframes slide_down {
@@ -368,5 +474,83 @@ footer > span {
 
     to {
         background-color: rgba(0, 0 ,0, 0);
+    }
+}
+
+@keyframes show-and-hide {
+    from {
+        opacity: 0;
+    }
+
+    3.75% {
+        opacity: 1;
+    }
+
+    21.25% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes player-swap-featured {
+    from {
+        transform: translateY(576px);
+    }
+
+    25% {
+        transform: translateY(0px);
+    }
+
+    75% {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(576px);
+    }
+}
+
+@keyframes player-swap-small {
+    from {
+        transform: translateY(216px);
+    }
+
+    25% {
+        transform: translateY(0px);
+    }
+
+    75% {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(216px);
+    }
+}
+
+@keyframes hide-text {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes show-text {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }

@@ -136,7 +136,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 "muteSettings": muteSettingsSource2
             }
         };
-        nodecg.sendMessage(`${server}-swap-video-source`, swapData);
+        nodecg.sendMessage(`${server}-swap-video-animation`, swapData);
+
+        setTimeout(function () {
+            nodecg.sendMessage(`${server}-swap-video-source`, swapData);
+        }, 1500);
 
         e.preventDefault();
     };

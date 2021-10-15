@@ -105,7 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById(`media-source-selection-${id}`).value = `${values.sourceName}`;
         document.getElementById(`rtmp-region-${id}`).value = `${values.rtmp.region}`;
         document.getElementById(`rtmp-key-${id}`).value = `${values.rtmp.key}`;
-        document.getElementById(`current-pb-${id}`).value = `${values.currentPB}`;
+        document.getElementById(`player-pb-${id}`).value = `${values.currentPB}`;
         document.getElementById(`afk-${id}`).checked = values.afk;
         document.getElementById(`open-slot-${id}`).checked = values.openSlot;
         updateReplicant();
@@ -186,7 +186,7 @@ window.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < maxAmountOfPlayers; i++) {
             const id = i + 1;
             const playerSelected = document.getElementById(`player-selection-${id}`).value;
-            const currentPB = document.getElementById(`current-pb-${id}`).value;
+            const currentPB = document.getElementById(`player-pb-${id}`).value;
             const afk = document.getElementById(`afk-${id}`).checked;
             const openSlot = document.getElementById(`open-slot-${id}`).checked;
 
@@ -248,7 +248,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (smallPlayerSettingsReplicant.value !== undefined && smallPlayerSettingsReplicant.value[id-1] !== undefined) {
                 const smallPlayer = smallPlayerSettingsReplicant.value[id-1];
                 document.getElementById(`player-selection-${id}`).value = `${smallPlayer.playerSelected}`;
-                document.getElementById(`current-pb-${id}`).value.value = `${smallPlayer.currentPB}`;
+                document.getElementById(`player-pb-${id}`).value = `${smallPlayer.currentPB}`;
                 document.getElementById(`afk-${id}`).checked = smallPlayer.afk;
                 document.getElementById(`open-slot-${id}`).checked = smallPlayer.openSlot;
             }
@@ -301,8 +301,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const RTMPRegion = createRTMPRegionSelection(`rtmp-region-${id}`);
         const RTMPKey = createRTMPKeyInput(`rtmp-key-${id}`);
 
-        const currentPBLabel = createLabel(`current-pb-${id}`, "Current PB");
-        const currentPBTextInput = createTextInput(`current-pb-${id}`, `current-pb-${id}`, "Current Personal Best");
+        const currentPBLabel = createLabel(`player-pb-${id}`, "Current PB");
+        const currentPBTextInput = createTextInput(`player-pb-${id}`, `player-pb-${id}`, "Current Personal Best");
 
         const AFKCheckboxInput = createCheckbox(`afk-${id}`, `afk-${id}`);
         const AFKCheckboxLabel = createLabelWithCheckbox(`afk-${id}`, AFKCheckboxInput, "AFK");

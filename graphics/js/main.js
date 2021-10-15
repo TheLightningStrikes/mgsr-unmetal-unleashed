@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const maxAmountOfPlayers = 6;
 
     let currentAmountOfPlayers = 0;
+    const commentators = document.getElementById("commentators");
 
     NodeCG.waitForReplicants(featuredPlayerSettingsReplicant, smallPlayerSettingsReplicant, runDataReplicant, currentAmountOfPlayersReplicant).then(() => {
         currentAmountOfPlayers = currentAmountOfPlayersReplicant.value;
@@ -26,7 +27,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
             currentAmountOfPlayers = newValue;
             currentAmountOfPlayersReplicant.value = newValue;
             insertSmallPlayerData(smallPlayerSettingsReplicant.value);
-        });
+        })
+
+        nodecg.listenFor(`${web}-swap-video-animation`, (swap) => {
+            document.getElementById(`player-swap-${swap.source1.id}`).classList.add("show");
+            document.getElementById(`player-swap-${swap.source2.id}`).classList.add("show");
+
+            setTimeout(function () {
+                document.getElementById(`player-swap-${swap.source1.id}`).classList.remove("show");
+                document.getElementById(`player-swap-${swap.source2.id}`).classList.remove("show");
+            }, 6000);
+        })
 
         smallPlayerSettingsReplicant.on("change", (newValue) => {
             if (newValue !== "" && newValue) {
@@ -40,7 +51,27 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 insertFeaturedPlayerData(newValue);
             }
         });
+
+        runDataReplicant.on("change", (newValue) => {
+            console.log(newValue);
+            if (newValue !== "" && newValue) {
+                const newCommentators = newValue.customData.commentators;
+                if (commentators.textContent !== newCommentators) {
+                    changeText("commentators-wrapper", "commentators", newValue.customData.commentators);
+                }
+            }
+        });
     });
+
+    function changeText(wrapperID, targetID, text) {
+        document.getElementById(wrapperID).classList.remove("show-text");
+        document.getElementById(wrapperID).classList.add("hide-text");
+        setTimeout(function () {
+            document.getElementById(targetID).textContent = text;
+            document.getElementById(wrapperID).classList.remove("hide-text");
+            document.getElementById(wrapperID).classList.add("show-text");
+        }, 1500);
+    }
 
     function insertFeaturedPlayerData(data) {
         const playerSelected = data.playerSelected;
@@ -49,9 +80,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
         const openSlot = data.openSlot;
 
         console.log(`Just got new featured player settings! playerSelected: ${playerSelected}, currentPB: ${currentPB}, afk: ${afk}, openSlot: ${openSlot}`);
-        document.getElementById(`player-pb-featured`).innerHTML = currentPB;
 
         insertRunData(runDataReplicant.value, playerSelected, "featured");
+
+        const playerPB = document.getElementById(`player-pb-featured`);
+        if (playerPB.textContent !== currentPB) {
+            changeText(`player-pb-featured`, `player-pb-featured`, currentPB);
+        }
 
         togglePlaceholder("featured", "afk", afk);
         togglePlaceholder("featured", "open-slot", openSlot);
@@ -67,7 +102,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 insertRunData(runDataReplicant.value, smallPlayerData.playerSelected, smallPlayerData.id);
 
                 const playerPB = document.getElementById(`player-pb-${smallPlayerData.id}`);
-                playerPB.innerHTML = smallPlayerData.currentPB;
+                if (playerPB.textContent !== smallPlayerData.currentPB) {
+                    changeText(`player-pb-${smallPlayerData.id}`, `player-pb-${smallPlayerData.id}`, smallPlayerData.currentPB);
+                }
 
                 togglePlaceholder(smallPlayerData.id, "afk", smallPlayerData.afk);
                 togglePlaceholder(smallPlayerData.id, "open-slot", smallPlayerData.openSlot);
@@ -157,7 +194,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
                 if (player.name === name) {
                     const playerNameSpan = document.getElementById(`player-name-${id}`);
-                    playerNameSpan.innerHTML = teams[i].players["0"].social.twitch;
+                    const twitchUserName = teams[i].players["0"].social.twitch;
+                    if (playerNameSpan.textContent !== twitchUserName) {
+                        changeText(`player-name-${id}`, `player-name-${id}`, twitchUserName);
+                    }
                     break;
                 }
             }
@@ -183,6 +223,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         smallPlayerAFK.append(createAFKElements());
         const smallPlayerStartup = createSmallPlayerPlaceholder(id, "startup");
         const smallPlayerOpenSlot = createSmallPlayerPlaceholder(id, "open-slot");
+        const smallPlayerSwap = createSmallPlayerPlaceholder(id, "swap");
         const smallPlayerDetails = createSmallPlayerDetails(id);
 
         const twitchLogo = createTwitchLogo(`twitch-logo-${id}`);
@@ -196,6 +237,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         smallPlayerPlaceholder.appendChild(smallPlayerAFK);
         smallPlayerPlaceholder.appendChild(smallPlayerOpenSlot);
         smallPlayerPlaceholder.appendChild(smallPlayerStartup);
+        smallPlayerPlaceholder.appendChild(smallPlayerSwap);
 
         smallPlayerWrapper.appendChild(smallPlayerPlaceholder);
         smallPlayerWrapper.appendChild(smallPlayerDetails);

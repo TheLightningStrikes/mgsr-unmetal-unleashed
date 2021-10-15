@@ -15,6 +15,10 @@ module.exports = function (nodecg) {
         nodecg.sendMessage(`${web}-swap-video-source`, data);
     });
 
+    nodecg.listenFor(`${server}-swap-video-animation`, (data) => {
+        nodecg.sendMessage(`${web}-swap-video-animation`, data);
+    });
+
     nodecg.listenFor(`${server}-media-sources`, (data) => {
         nodecg.sendMessage(`${web}-media-sources`, data);
     });
@@ -29,5 +33,9 @@ module.exports = function (nodecg) {
 
     nodecg.listenFor(`${server}-rtmp-change-result`, (data) => {
         nodecg.sendMessage(`${web}-rtmp-change-result`, data);
+    });
+
+    nodecg.listenFor(`${server}-statistics-update`, (data) => {
+        nodecg.sendMessage(`${web}-statistics-update`, data);
     });
 }
