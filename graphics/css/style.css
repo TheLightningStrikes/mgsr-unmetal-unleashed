@@ -246,26 +246,39 @@ body {
 }
 
 .player-open-slot {
-    background-color: rgba(253, 107, 107,0);
+    background-color: rgba(0, 0 , 0 ,1);
     position: absolute;
     top: 0;
     left: 0;
     width:100%;
     height:100%;
-    transition: background-color 1s;
+    opacity: 0;
+    transition: opacity 1s;
 }
 
-.player-open-slot > div {
+.player-open-slot > p {
     opacity: 0;
+    text-align: center;
+    margin-top: 25%;
+    color: white;
+    animation: blink 20s infinite;
+}
+
+.featured-player .player-open-slot {
+    font-size: 40pt;
+}
+
+.small-player .player-open-slot {
+    font-size: 21pt;
 }
 
 .player-open-slot.show {
-    background-color: rgba(253, 107, 107,0.5);
-    transition: background-color 1s;
+    opacity: 1;
+    transition: opacity 1s;
     transition-delay: 1.5s;
 }
 
-.player-open-slot.show > div {
+.player-open-slot.show > p {
     opacity: 1;
     transition: opacity 1s;
     transition-delay: 1.5s;
@@ -552,5 +565,31 @@ footer > span {
 
     to {
         opacity: 1;
+    }
+}
+
+@keyframes blink {
+    from {
+        color: white;
+    }
+
+    0.5% {
+        color: #9f1311;
+    }
+
+    1% {
+        color: white;
+    }
+
+    1.5% {
+        color: #9f1311;
+    }
+
+    2% {
+        color: white;
+    }
+
+    to {
+        color: white;
     }
 }

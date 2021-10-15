@@ -235,6 +235,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         smallPlayerAFK.append(createAFKElements());
         const smallPlayerStartup = createSmallPlayerPlaceholder(id, "startup");
         const smallPlayerOpenSlot = createSmallPlayerPlaceholder(id, "open-slot");
+        smallPlayerOpenSlot.append(createOpenSlotElements());
         const smallPlayerSwap = createSmallPlayerPlaceholder(id, "swap");
         const smallPlayerDetails = createSmallPlayerDetails(id);
 
@@ -300,5 +301,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
         div.append(span);
         div.append(img);
         return div;
+    }
+
+    function createOpenSlotElements() {
+        const p = document.createElement("p");
+        p.textContent = "PRESS START TO PLAY";
+        return p;
     }
 });
