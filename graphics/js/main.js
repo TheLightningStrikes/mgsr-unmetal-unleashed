@@ -133,13 +133,37 @@ window.addEventListener('DOMContentLoaded', (event) => {
             placeholder.classList.add("show");
             if (name === "open-slot") {
                 document.getElementById(`${id}-player-details-wrapper`).classList.add("hide-text");
-                document.getElementById(`${id}-player-details-wrapper`).classList.remove("show-text");
+                document.getElementById(`${id}-player-details-wrapper`).classList.remove("show-text")
+                const wrapper = document.getElementById(`${id}-player-open-slot-wrapper`);
+                if (wrapper === null) {
+                    document.getElementById(`player-open-slot-${id}`).append(createOpenSlotElements(id));
+                }
+            }
+            if (name === "afk") {
+                setTimeout(function () {
+                    const wrapper = document.getElementById(`${id}-player-afk-wrapper`);
+                    if (wrapper === null) {
+                        document.getElementById(`player-afk-${id}`).append(createAFKElements(id));
+                        document.getElementById(`${id}-afk-text`).classList.add("show-text");
+                    }
+                }, 2500);
             }
         } else {
+            console.log(`player-${name}-${id}`);
             placeholder.classList.remove("show");
             if (name === "open-slot") {
                 document.getElementById(`${id}-player-details-wrapper`).classList.remove("hide-text");
                 document.getElementById(`${id}-player-details-wrapper`).classList.add("show-text");
+                const wrapper = document.getElementById(`${id}-player-open-slot-wrapper`);
+                if (wrapper !== null) {
+                    wrapper.remove();
+                }
+            }
+            if (name === "afk") {
+                const wrapper = document.getElementById(`${id}-player-afk-wrapper`);
+                if (wrapper !== null) {
+                    wrapper.remove();
+                }
             }
         }
     }
@@ -241,10 +265,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         const smallPlayerPlaceholder = createSmallPlayerPlaceholder(id, "placeholder");
         const smallPlayerAFK = createSmallPlayerPlaceholder(id, "afk");
-        smallPlayerAFK.append(createAFKElements());
         const smallPlayerStartup = createSmallPlayerPlaceholder(id, "startup");
         const smallPlayerOpenSlot = createSmallPlayerPlaceholder(id, "open-slot");
-        smallPlayerOpenSlot.append(createOpenSlotElements());
         const smallPlayerSwap = createSmallPlayerPlaceholder(id, "swap");
         const smallPlayerDetails = createSmallPlayerDetails(id);
 
@@ -272,6 +294,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function createSmallPlayerPlaceholder(id, name) {
+        console.log(`player-${name}-${id}`);
         const placeholder = document.createElement("div");
         placeholder.setAttribute("class", `small-player player-${name}`);
         placeholder.setAttribute("id", `player-${name}-${id}`)
@@ -300,25 +323,43 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return img;
     }
 
-    function createAFKElements() {
+    function createAFKElements(id) {
         const div = document.createElement("div");
         div.classList.add("AFK-screen");
+        div.setAttribute("id",`${id}-player-afk-wrapper`);
 
         const span = document.createElement("p");
         span.textContent = "AFK";
+        span.id = `${id}-afk-text`;
 
-        const img = document.createElement("img");
-        img.src = "/bundles/mgsr-unmetal-unleashed/graphics/img/guard-box-5s.gif";
-        img.alt = "guard-box";
+        const img1 = document.createElement("img");
+        img1.src = "/bundles/mgsr-unmetal-unleashed/graphics/img/guard-box-going-in.gif";
+        img1.alt = "guard-box";
+        img1.classList.add("going-in");
+        img1.setAttribute("id", `${id}-player-going-in`);
+
+        const img2 = document.createElement("img");
+        img2.src = "/bundles/mgsr-unmetal-unleashed/graphics/img/guard-box-sleeping.gif";
+        img2.alt = "guard-box-sleeping";
+        img2.classList.add("sleeping");
+        img2.setAttribute("id", `${id}-player-sleeping`);
 
         div.append(span);
-        div.append(img);
+        div.append(img1);
+        div.append(img2);
         return div;
     }
 
-    function createOpenSlotElements() {
+    function createOpenSlotElements(id) {
+        const wrapper = document.createElement("div");
+        wrapper.setAttribute("id", `${id}-player-open-slot-wrapper`);
         const p = document.createElement("p");
         p.textContent = "PRESS START TO PLAY";
-        return p;
+        const img = document.createElement("img");
+        img.setAttribute("src", "/bundles/mgsr-unmetal-unleashed/graphics/img/animation-open-slot-10m-20m.gif");
+        img.setAttribute("alt", "jesse recks")
+        wrapper.append(p);
+        wrapper.append(img);
+        return wrapper;
     }
 });

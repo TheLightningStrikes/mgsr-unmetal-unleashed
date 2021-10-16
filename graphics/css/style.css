@@ -15,6 +15,11 @@
     overflow: hidden;
 }
 
+.featured-player .player-afk.show > div > .sleeping {
+    margin-top: 20px;
+    margin-left: -70px;
+}
+
 .featured-player-wrapper {
     width: 1024px;
     height: 626px;
@@ -256,12 +261,11 @@ body {
     transition: opacity 1s;
 }
 
-.player-open-slot > p {
+.player-open-slot > div > p {
     opacity: 0;
     text-align: center;
-    margin-top: 25%;
+    margin-top: 10%;
     color: white;
-    animation: blink 20s infinite;
 }
 
 .featured-player .player-open-slot {
@@ -278,10 +282,19 @@ body {
     transition-delay: 1.5s;
 }
 
-.player-open-slot.show > p {
+.player-open-slot.show > div > p {
     opacity: 1;
     transition: opacity 1s;
-    transition-delay: 1.5s;
+    transition-delay: 2s;
+}
+
+.player-open-slot > div > img {
+    display: inline;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
 }
 
 .player-afk {
@@ -309,6 +322,20 @@ body {
     opacity: 1;
     transition: opacity 1s;
     transition-delay: 1.5s;
+}
+
+.player-afk.show > div > .going-in {
+    display: inline;
+    animation: hide-animation forwards;
+    animation-delay: 5s;
+}
+
+.player-afk.show > div > .sleeping {
+    display: inline;
+    opacity: 0;
+    margin-top: -70px;
+    animation: display-animation forwards;
+    animation-delay: 5s;
 }
 
 .small-player-details {
@@ -590,5 +617,24 @@ footer > span {
 
     to {
         color: white;
+    }
+}
+
+@keyframes display-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes hide-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }
