@@ -15,6 +15,12 @@ window.addEventListener('DOMContentLoaded', () => {
     initializeValues();
 
     function initializeValues() {
+        nodecg.listenFor(`${web}-small-settings-update`, (data) => {
+            for (let i = 0; i < maxAmountOfPlayers; i++) {
+                updateValues(data[i].id, data[i]);
+            }
+        });
+
         nodecg.listenFor(`${web}-media-sources`, (data) => {
             for (let i = 0; i < maxAmountOfPlayers; i++) {
                 const id = i + 1;
@@ -65,6 +71,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         updateValues(id, data.source1.playerData);
                     }
                 }
+                updateReplicant();
             }
         });
 
@@ -108,7 +115,6 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById(`player-pb-${id}`).value = `${values.currentPB}`;
         document.getElementById(`afk-${id}`).checked = values.afk;
         document.getElementById(`open-slot-${id}`).checked = values.openSlot;
-        updateReplicant();
     }
 
     function createSelectInput(id) {
@@ -222,7 +228,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         smallPlayerSettingsReplicant.value = data;
-
+        nodecg.sendMessage(`${server}-small-settings-update`, data);
     }
 
     function checkRTMPForChange(rtmpData, smallPlayer) {

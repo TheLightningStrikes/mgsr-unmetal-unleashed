@@ -35,6 +35,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
             updateReplicant();
         });
 
+        nodecg.listenFor(`${web}-featured-settings-update`, (data) => {
+            updateValues(data);
+        });
+
         nodecg.listenFor(`${web}-obs-status`, (status) => {
             if (status.connected) {
                 const sourceSelection = document.getElementById(`media-source-selection-featured`);
@@ -65,6 +69,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 if (data.source2.id === "featured") {
                     updateValues(data.source1.playerData);
                 }
+                updateReplicant();
             }
         });
 
@@ -136,7 +141,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         currentPB.value = values.currentPB;
         AFK.checked = values.afk;
         openSlot.checked = values.openSlot;
-        updateReplicant();
     }
 
     document.getElementById("featured-player-submit").onclick = function (e) {

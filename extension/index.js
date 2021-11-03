@@ -38,4 +38,12 @@ module.exports = function (nodecg) {
     nodecg.listenFor(`${server}-statistics-update`, (data) => {
         nodecg.sendMessage(`${web}-statistics-update`, data);
     });
+
+    nodecg.listenFor(`${server}-small-settings-update`, (data) => {
+        nodecg.sendMessage(`${web}-small-settings-update`, data);
+    });
+
+    nodecg.listenFor(`${server}-featured-settings-update`, (data) => {
+        nodecg.sendMessage(`${web}-featured-settings-update`, data);
+    });
 }
