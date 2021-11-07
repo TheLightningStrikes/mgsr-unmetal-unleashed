@@ -36,6 +36,14 @@
         "workspace": "UnMetal Unleashed"
       },
       {
+        "name": "obs-settings-panel",
+        "title": "OBS Settings",
+        "width": 6,
+        "file": "obs-settings.html",
+        "headerColor": "#525F7F",
+        "workspace": "UnMetal Unleashed"
+      },
+      {
         "name": "swap-panel",
         "title": "Swap Runners",
         "width": 2,

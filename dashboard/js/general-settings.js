@@ -84,6 +84,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function initializeValues() {
         nodecg.listenFor(`${web}-swap-video-source`, (data) => {
+            console.log(data);
             swapMediaSource(data.source1, data.source2);
         });
 

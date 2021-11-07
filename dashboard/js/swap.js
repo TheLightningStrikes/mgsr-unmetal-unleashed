@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', (event) => {
     const smallPlayerSettingsReplicant = nodecg.Replicant("player-small-settings");
     const playerFeaturedReplicant = nodecg.Replicant("player-featured-settings");
+    const RTMPSettingsDataReplicant = nodecg.Replicant("rtmp-data", {defaultValue: {}});
 
     const source1 = document.getElementById("source-1");
     const source2 = document.getElementById("source-2");
@@ -111,8 +112,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
         if (source1.value === source2.value) {
             return;
         }
-        const player1 = findPlayerByPlayerName(source1.value);
-        const player2 = findPlayerByPlayerName(source2.value);
+        const rtmpPlayer1 = getRTMPData(source1.value);
+        const rtmpPlayer2 = getRTMPData(source2.value);
+
+        const player1Data = findPlayerByPlayerName(source1.value);
+        const player2Data = findPlayerByPlayerName(source2.value);
 
         source1playerSelected = source1.value;
         source2playerSelected = source2.value;
@@ -122,17 +126,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         const swapData = {
             "source1": {
-                "sourceName": player1.sourceName,
-                "playerName": player1.playerSelected,
-                "id": player1.id,
-                "playerData": player1,
+                "sourceName": rtmpPlayer1.sourceName,
+                "id": source1playerSelected,
+                "rtmpData": rtmpPlayer1,
+                "playerData": player1Data,
                 "muteSettings": muteSettingsSource1
             },
             "source2": {
-                "sourceName": player2.sourceName,
-                "playerName": player2.playerSelected,
-                "id": player2.id,
-                "playerData": player2,
+                "sourceName": rtmpPlayer2.sourceName,
+                "id": source2playerSelected,
+                "rtmpData": rtmpPlayer2,
+                "playerData": player2Data,
                 "muteSettings": muteSettingsSource2
             }
         };
@@ -156,6 +160,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return {change: false, value: false};
         }
     }
+
+    function getRTMPData(id) {
+        for (let i in RTMPSettingsDataReplicant.value) {
+            const rtmp = RTMPSettingsDataReplicant.value[i];
+            console.log(rtmp);
+            console.log(i);
+            if (rtmp.id == id) {
+                return Object.assign({}, rtmp);
+            }
+        }
+    }
+
 
     function findPlayerByPlayerName(id) {
         if (playerFeaturedReplicant.value.id === id) {
