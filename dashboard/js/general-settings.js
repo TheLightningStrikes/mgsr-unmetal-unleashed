@@ -144,11 +144,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function getMediaSources() {
         if (obs._connected) {
-            obs.send('GetMediaSourcesList', {sceneName: sceneName}).then((data) => {
-                console.log(data)
-
-                nodecg.sendMessage(`${server}-media-sources`, data);
-                mediaSourcesReplicant.value = data;
+            console.log(sceneName);
+            obs.send('GetSceneItemList', {sceneName: sceneName}).then((data) => {
+                const mediaSources = [];
+                const sceneItems = data.sceneItems;
+                for (let id in sceneItems) {
+                    const source = sceneItems[id];
+                    console.log(source);
+                    if (source.sourceKind === "vlc_source") {
+                        console.log("added");
+                        mediaSources.push(sceneItems[id]);
+                    }
+                }
+                nodecg.sendMessage(`${server}-media-sources`, mediaSources);
+                mediaSourcesReplicant.value = mediaSources;
             });
         }
     }

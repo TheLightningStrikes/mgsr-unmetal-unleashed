@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < maxAmountOfPlayers; i++) {
                 const sourceSelection = document.getElementById(`media-source-selection-${i}`);
                 sourceSelection.innerHTML = "";
-                const options = createMediaSourceOptions(i, data.mediaSources);
+                const options = createMediaSourceOptions(i, data);
                 for (let id in options) {
                     sourceSelection.append(options[id])
                 }
@@ -219,6 +219,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function createMediaSourceOptions(id, data) {
         const options = [];
+        console.log(data);
         for (let dataID in data) {
             const sourceName = data[dataID].sourceName;
             const option = document.createElement("option");
