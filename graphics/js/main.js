@@ -93,15 +93,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         console.log(`Just got new featured player settings! playerSelected: ${playerSelected}, currentPB: ${currentPB}, afk: ${afk}, openSlot: ${openSlot}`);
 
-        insertRunData(runDataReplicant.value, playerSelected, "featured");
+        insertRunData(runDataReplicant.value, playerSelected, "0");
 
-        const playerPB = document.getElementById(`player-pb-featured`);
+        const playerPB = document.getElementById(`player-pb-0`);
         if (playerPB.textContent !== currentPB) {
-            changeText(`player-pb-featured`, `player-pb-featured`, currentPB);
+            changeText(`player-pb-0`, `player-pb-0`, currentPB);
         }
 
-        togglePlaceholder("featured", "afk", afk);
-        togglePlaceholder("featured", "open-slot", openSlot);
+        togglePlaceholder("0", "afk", afk);
+        togglePlaceholder("0", "open-slot", openSlot);
     }
 
     function insertSmallPlayerData(data) {

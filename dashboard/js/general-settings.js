@@ -124,7 +124,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             nodecg.sendMessage(`${server}-obs-status`, {connected: true});
 
             getMediaSources();
-            // obs.send("GetSourceSettings", {sourceName: "VLC Video Source"}).then((data) => {
+            // obs.send("GetSourceSettings", {sourceName: "Media Source 1"}).then((data) => {
             //     console.log("GetSourceSettings", data)
             // });
             // obs.send("GetSceneItemProperties", {item: "VLC Video Source"}).then((data) => {
@@ -151,7 +151,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 for (let id in sceneItems) {
                     const source = sceneItems[id];
                     console.log(source);
-                    if (source.sourceKind === "vlc_source") {
+                    if (source.sourceKind === "ffmpeg_source") {
                         console.log("added");
                         mediaSources.push(sceneItems[id]);
                     }
@@ -167,13 +167,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
         return new Promise((reject, resolve) => {
             if (obs._connected) {
                 const video = {
-                    "hidden": false,
-                    "selected": false,
-                    "value": url
+                    "hw_decode": true,
+                    "is_local_file": false,
+                    "input": url
                 }
                 obs.send("SetSourceSettings", {
                     sourceName: sourceName,
-                    sourceSettings: {playlist: [video]},
+                    sourceSettings: video,
                     sceneName: sceneName
                 })
                     // .catch((error) => {
