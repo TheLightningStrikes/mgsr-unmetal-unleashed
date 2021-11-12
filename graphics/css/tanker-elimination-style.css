@@ -29,9 +29,8 @@
 .featured-player-details {
     width: 1024px;
     height: 50px;
-    background: rgb(169,254,255);
-    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
-    color: #340085;
+    background: #2D3142;
+    color: #FFC43D;
 }
 
 .twitch-logo {
@@ -58,6 +57,7 @@
     padding-top: 9px;
     font-size: 20pt;
     text-align: right;
+    color: #7C8584;
 }
 
 .featured-player-details .player-name {
@@ -86,7 +86,7 @@
 body {
     width: 1920px;
     height: 1080px;
-    color: #340085;
+    color: #7C8584;
     margin: 0;
     padding: 0;
     background-color: transparent;
@@ -99,7 +99,7 @@ body {
     font-size: 21pt;
     height: 30px;
     padding: 5px;
-    color: white;
+    color: #7C8584;
     margin-top: -22px;
 }
 
@@ -342,9 +342,9 @@ body {
 .small-player-details {
     width: 384px;
     height: 50px;
-    color: #340085;
+    color: #FFC43D;
     overflow: hidden;
-    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    background: #2D3142;
 }
 
 .small-player-details.showing {
@@ -353,7 +353,7 @@ body {
 
 .small-player-details.hidden {
     color: transparent;
-    background: linear-gradient(80deg, rgba(169,254,255,0) 0%, rgba(231,255,225,0) 100%);
+    background: rgba(0,0,0,0);
 }
 
 .small-player-details.hiding {
@@ -374,15 +374,14 @@ footer {
     bottom: 0;
     width: 100%;
     height: 60px;
-    background: rgb(169,254,255);
-    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    background: #2D3142;
     font-size: 42px;
-    color: #340085;
+    color: #FFC43D;
 }
 
 footer > img {
     width: 400px;
-    margin-top: -465px;
+    margin-top: -454px;
     float: left;
     margin-left: 0;
 }
@@ -399,9 +398,8 @@ footer > span {
 .statistics {
     height: 70px;
     width: 364px;
-    background: rgb(169,254,255);
     background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
-    color: #340085;
+    color: #FFC43D;
     padding: 10px;
     font-size: 21pt;
     float: left;
@@ -418,7 +416,7 @@ footer > span {
 .timer {
     height: 120px;
     width: 100%;
-    color: white;
+    color: #F13C21;
     font-size: 70pt;
     text-align: center;
     padding-right: 38px;

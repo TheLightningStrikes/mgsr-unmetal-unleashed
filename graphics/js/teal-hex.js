@@ -16,7 +16,7 @@ var w = c.width = 1920,
         sparkDist: 10,
         sparkSize: 2,
 
-        color: 'hsl(207,100%,10%)',
+        color: 'hsl(0,100%,10%)',
         baseLight: 0,
         addedLight: 0, // [50-10,50+10]
         shadowToTimePropMult: 0,
