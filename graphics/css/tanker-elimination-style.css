@@ -356,6 +356,14 @@ body {
     background: rgba(0,0,0,0);
 }
 
+.small-player-details.hiding .player-pb {
+    color: transparent;
+}
+
+.small-player-details.showing .player-pb {
+    color: #7C8584;
+}
+
 .small-player-details.hiding {
     color: transparent;
     animation: slide_up 2s ease-in-out;
