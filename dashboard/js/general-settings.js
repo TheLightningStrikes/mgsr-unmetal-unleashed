@@ -89,7 +89,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
 
         nodecg.listenFor(`${web}-rtmp-change`, (data) => {
-            console.log(data)
             const copy = Object.assign({}, data);
             setMediaSource(data.sourceName, getRTMPLink(data.rtmp.region, data.rtmp.key))
                 .catch((error) => {
@@ -102,8 +101,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         NodeCG.waitForReplicants(numberOfPlayersReplicant).then(() => {
             numberOfPlayers.value = numberOfPlayersReplicant.value;
-
-            nodecg.sendMessage(`${server}-obs-status`, {connected: false});
+            console.log(obs !== undefined && obs._connected);
+            if (obs !== undefined && obs._connected) {
+                nodecg.sendMessage(`${server}-obs-status`, {connected: true});
+            }
+            else {
+                nodecg.sendMessage(`${server}-obs-status`, {connected: false});
+            }
         });
     }
 
@@ -144,16 +148,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     function getMediaSources() {
         if (obs._connected) {
-            console.log(sceneName);
             obs.send('GetSceneItemList', {sceneName: sceneName}).then((data) => {
                 const mediaSources = [];
                 const sceneItems = data.sceneItems;
                 for (let id in sceneItems) {
                     const source = sceneItems[id];
-                    console.log(source);
                     if (source.sourceKind === "ffmpeg_source") {
-                        console.log("added");
-                        mediaSources.push(sceneItems[id]);
+                        mediaSources.push(source.sourceName);
                     }
                 }
                 nodecg.sendMessage(`${server}-media-sources`, mediaSources);
@@ -163,9 +164,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function setMediaSource(sourceName, url) {
-        console.log(sourceName);
         return new Promise((reject, resolve) => {
-            if (obs._connected) {
+            if (obs._connected && sourceName !== "undefined") {
                 const video = {
                     "hw_decode": true,
                     "is_local_file": false,

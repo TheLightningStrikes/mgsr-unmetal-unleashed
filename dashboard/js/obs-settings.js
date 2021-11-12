@@ -13,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
     function initializeValues() {
         NodeCG.waitForReplicants(mediaSourcesReplicant, RTMPSettingsDataReplicant).then(() => {
             createSettings(maxAmountOfPlayers);
+            console.log(mediaSourcesReplicant.value);
         });
 
         nodecg.listenFor(`${web}-obs-status`, (status) => {
@@ -45,10 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 sourceSelection.innerHTML = "";
                 const options = createMediaSourceOptions(i, data);
                 for (let id in options) {
-                    sourceSelection.append(options[id])
+                    sourceSelection.appendChild(options[id])
                 }
             }
-            updateReplicant();
+            //updateReplicant();
         });
 
         nodecg.listenFor(`${web}-swap-video-source-result`, (data) => {
@@ -161,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
         let sourceSelectionOptions;
 
         if (mediaSourcesReplicant.value !== undefined) {
-            sourceSelectionOptions = (createMediaSourceOptions(id, mediaSourcesReplicant.value.mediaSources));
+            sourceSelectionOptions = (createMediaSourceOptions(id, mediaSourcesReplicant.value));
         } else {
             sourceSelectionOptions = [];
         }
@@ -221,11 +222,11 @@ window.addEventListener('DOMContentLoaded', () => {
         const options = [];
         console.log(data);
         for (let dataID in data) {
-            const sourceName = data[dataID].sourceName;
+            const sourceName = data[dataID];
             const option = document.createElement("option");
             option.value = sourceName;
             option.innerHTML = sourceName;
-            if (RTMPSettingsDataReplicant.value !== undefined && RTMPSettingsDataReplicant.value[id] !== undefined && sourceName === RTMPSettingsDataReplicant.value[id].sourceName) {
+            if (RTMPSettingsDataReplicant.value !== undefined && RTMPSettingsDataReplicant.value[id] !== undefined && sourceName == RTMPSettingsDataReplicant.value[id].sourceName) {
                 option.selected = true;
             }
 
