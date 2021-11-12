@@ -65,6 +65,16 @@
         "file": "unmetal-unleashed.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "tanker-elimination.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "teal-hex.html",
+        "width": 1920,
+        "height": 2160
       }
     ]
   },

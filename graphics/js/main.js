@@ -95,10 +95,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         insertRunData(runDataReplicant.value, playerSelected, "0");
 
-        const playerPB = document.getElementById(`player-pb-0`);
-        if (playerPB.textContent !== currentPB) {
-            changeText(`player-pb-0`, `player-pb-0`, currentPB);
-        }
+        // const playerPB = document.getElementById(`player-pb-0`);
+        // if (playerPB.textContent !== currentPB) {
+        //     changeText(`player-pb-0`, `player-pb-0`, currentPB);
+        // }
 
         togglePlaceholder("0", "afk", afk);
         togglePlaceholder("0", "open-slot", openSlot);
@@ -113,10 +113,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
                 insertRunData(runDataReplicant.value, smallPlayerData.playerSelected, smallPlayerData.id);
 
-                const playerPB = document.getElementById(`player-pb-${smallPlayerData.id}`);
-                if (playerPB.textContent !== smallPlayerData.currentPB) {
-                    changeText(`player-pb-${smallPlayerData.id}`, `player-pb-${smallPlayerData.id}`, smallPlayerData.currentPB);
-                }
+                // const playerPB = document.getElementById(`player-pb-${smallPlayerData.id}`);
+                // if (playerPB.textContent !== smallPlayerData.currentPB) {
+                //     changeText(`player-pb-${smallPlayerData.id}`, `player-pb-${smallPlayerData.id}`, smallPlayerData.currentPB);
+                // }
 
                 togglePlaceholder(smallPlayerData.id, "afk", smallPlayerData.afk);
                 togglePlaceholder(smallPlayerData.id, "open-slot", smallPlayerData.openSlot);
@@ -240,8 +240,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 if (player.name === name) {
                     const playerNameSpan = document.getElementById(`player-name-${id}`);
                     const twitchUserName = teams[i].players["0"].social.twitch;
+                    const pronouns = teams[i].players["0"].pronouns;
                     if (playerNameSpan.textContent !== twitchUserName) {
                         changeText(`player-name-${id}`, `player-name-${id}`, twitchUserName);
+                        changeText(`player-pb-${id}`, `player-pb-${id}`, pronouns)
                     }
                     break;
                 }

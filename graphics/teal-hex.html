@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .gradient {
+        width: 1920px;
+        height: 2160px;
+        background: rgb(1, 0, 20);
+        background: linear-gradient(180deg, rgba(1, 0, 20, 1) 0%, rgba(1, 0, 20, 0) 100%);
+    }
+    .container {
+        width: 1920px;
+        height: 1080px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .container > div {
+        opacity: 0;
+        width: 1920px;
+        height: 1080px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .container > div.show {
+        opacity: 1;
+    }
+    .background-0 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-0.png");
+    }
+    .background-1 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-1.png");
+    }
+    .background-2 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-2.png");
+    }
+    .background-3 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-3.png");
+    }
+    .background-4 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-4.png");
+    }
+    .background-5 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-5.png");
+    }
+    .background-6 {
+        -webkit-mask-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/background/background-6.png");
+    }
+
+</style>
+<body>
+<div class="container" id="container">
+    <div class="background-0" id="background-0"></div>
+    <div class="background-1" id="background-1"></div>
+    <div class="background-2" id="background-2"></div>
+    <div class="background-3" id="background-3"></div>
+    <div class="background-4" id="background-4"></div>
+    <div class="background-5" id="background-5"></div>
+    <div class="background-6" id="background-6"></div>
+    <canvas id=c></canvas>
+    <div class="gradient"></div>
+</div>
+<script src="js/teal-hex.js"></script>
+</body>
+</html>

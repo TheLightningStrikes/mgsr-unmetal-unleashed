@@ -1,0 +1,663 @@
+@font-face {
+    font-family: BebasKai;
+    src: url(../font/BebasKai.otf);
+}
+
+.large-player {
+    width: 100%;
+    height: 654px;
+}
+
+.featured-player {
+    width: 1024px;
+    height: 576px;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-player .player-afk.show > div > .sleeping {
+    margin-top: 20px;
+    margin-left: -70px;
+}
+
+.featured-player-wrapper {
+    width: 1024px;
+    height: 626px;
+    padding: 0 38px;
+}
+
+.featured-player-details {
+    width: 1024px;
+    height: 50px;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    color: #340085;
+}
+
+.twitch-logo {
+    height:30px;
+    width: 30px;
+    padding: 10px 5px 10px 10px;
+    float: left;
+}
+
+.player-name {
+    height: 42px;
+    display: inline-block;
+    float: left;
+    font-size: 20pt;
+    padding-left: 8px;
+    padding-top: 9px;
+}
+
+.player-pb {
+    height: 42px;
+    display: inline-block;
+    float: left;
+    padding-right: 8px;
+    padding-top: 9px;
+    font-size: 20pt;
+    text-align: right;
+}
+
+.featured-player-details .player-name {
+    width: 787px;
+}
+
+.featured-player-details .player-pb {
+    width: 176px;
+}
+
+.small-player-details .player-name {
+    width: 197px;
+}
+
+.small-player-details .player-pb {
+    width: 126px;
+}
+
+.row {
+    float: left;
+    display: inline-block;
+    margin-right: 14px;
+    margin-bottom: 14px;
+}
+
+body {
+    width: 1920px;
+    height: 1080px;
+    color: #340085;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    font-family: BebasKai, sans-serif;
+}
+
+.commentators {
+    width: calc(100% - 50px);
+    text-align: right;
+    font-size: 21pt;
+    height: 30px;
+    padding: 5px;
+    color: white;
+    margin-top: -22px;
+}
+
+.logo-reel {
+    margin-top: 20px;
+    width: 300px;
+    position: relative;
+    margin-left: 555px;
+}
+
+.logo-reel > img {
+    width: 300px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.logo-reel > img.one {
+    animation: show-and-hide 40s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.logo-reel > img.two {
+    animation: show-and-hide 40s ease-in-out infinite;;
+    animation-delay: 10s;
+    margin-top: 50px;
+}
+
+.logo-reel > img.three {
+    animation: show-and-hide 40s ease-in-out infinite;;
+    animation-delay: 20s;
+    margin-top: 25px;
+}
+
+.logo-reel > img.four {
+    animation: show-and-hide 40s ease-in-out infinite;;
+    animation-delay: 30s;
+    margin-top: 30px;
+}
+
+.background {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    z-index: -50;
+    display: none;
+}
+
+.background > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1000;
+    opacity: 0;
+}
+
+.background > img.show {
+    opacity: 100;
+}
+
+.statistics {
+    width: 100%;
+    height: 356px;
+}
+
+.left-column {
+    width: 1100px;
+    float: left;
+    margin-top: 38px;
+}
+
+.right-column {
+    width: 820px;
+    float: left;
+    margin-top: 38px;
+}
+
+.small-player {
+    width: 384px;
+    height: 216px;
+    position: relative;
+    overflow: hidden;
+}
+
+.small-player-wrapper {
+    display: inline-block;
+}
+
+.player-startup {
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+}
+
+.player-startup.showing {
+    animation: ease-in-out slide_along_down 2s;
+    animation-delay: 0.5s;
+}
+
+.player-startup.hiding {
+    background-color: rgba(0,0,0,0);
+    animation: ease-in-out slide_along_up 3s;
+    animation-fill-mode: forwards;
+}
+
+.featured-player .AFK-screen {
+    width: 400px;
+    margin-left: 350px;
+    margin-top: 198px;
+}
+
+.featured-player .AFK-screen img {
+    height: 120px;
+    margin-left: 50px;
+    float: left;
+    margin-top: 20px;
+}
+
+.featured-player .AFK-screen p {
+    font-size: 40pt;
+    padding: 20px;
+    width: 100px;
+    float: left;
+}
+
+.small-player .AFK-screen {
+    width: 150px;
+    margin-left: 107px;
+    margin-top: 53px;
+}
+
+.small-player .AFK-screen img {
+    height: 70px;
+    margin-left: 20px;
+    float: left;
+    margin-top: 10px;
+}
+
+.small-player .AFK-screen p {
+    font-size: 20pt;
+    padding: 20px;
+    float: left;
+}
+
+.player-open-slot {
+    background-color: rgba(0, 0 , 0 ,1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.player-open-slot > div > p {
+    opacity: 0;
+    text-align: center;
+    margin-top: 10%;
+    color: white;
+}
+
+.featured-player .player-open-slot {
+    font-size: 40pt;
+}
+
+.small-player .player-open-slot {
+    font-size: 21pt;
+}
+
+.player-open-slot.show {
+    opacity: 1;
+    transition: opacity 1s;
+    transition-delay: 1.5s;
+}
+
+.player-open-slot.show > div > p {
+    opacity: 1;
+    transition: opacity 1s;
+    transition-delay: 2s;
+}
+
+.player-open-slot > div > img {
+    display: inline;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.player-afk {
+    background-color: rgba(0,0,0,0);
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    transition: background-color 1s;
+}
+
+.player-afk > div {
+    opacity: 0;
+}
+
+.player-afk.show {
+    background-color: rgba(0, 0, 0,0.95);
+    transition: background-color 1s;
+    transition-delay: 1.5s;
+}
+
+.player-afk.show > div {
+    opacity: 1;
+    transition: opacity 1s;
+    transition-delay: 1.5s;
+}
+
+.player-afk.show > div > .going-in {
+    display: inline;
+    animation: hide-animation forwards;
+    animation-delay: 5s;
+}
+
+.player-afk.show > div > .sleeping {
+    display: inline;
+    opacity: 0;
+    margin-top: -70px;
+    animation: display-animation forwards;
+    animation-delay: 5s;
+}
+
+.small-player-details {
+    width: 384px;
+    height: 50px;
+    color: #340085;
+    overflow: hidden;
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+}
+
+.small-player-details.showing {
+    animation: slide_down 1.5s ease-in-out;
+}
+
+.small-player-details.hidden {
+    color: transparent;
+    background: linear-gradient(80deg, rgba(169,254,255,0) 0%, rgba(231,255,225,0) 100%);
+}
+
+.small-player-details.hiding {
+    color: transparent;
+    animation: slide_up 2s ease-in-out;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+}
+
+.small-player-details.hidden .twitch-logo,
+.small-player-details.hiding .twitch-logo {
+    display: none;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    font-size: 42px;
+    color: #340085;
+}
+
+footer > img {
+    width: 400px;
+    margin-top: -465px;
+    float: left;
+    margin-left: 0;
+}
+
+footer > span {
+    width: 1140px;
+    text-align: center;
+    display: inline-block;
+    float: left;
+    height: 60px;
+    padding: 5px;
+}
+
+.statistics {
+    height: 70px;
+    width: 364px;
+    background: rgb(169,254,255);
+    background: linear-gradient(80deg, rgba(169,254,255,1) 0%, rgba(231,255,225,1) 100%);
+    color: #340085;
+    padding: 10px;
+    font-size: 21pt;
+    float: left;
+    margin-right: 14px;
+    margin-top: 15px;
+    display: none;
+}
+
+.statistics > span {
+    width: 100%;
+    display: inline-block;
+}
+
+.timer {
+    height: 120px;
+    width: 100%;
+    color: white;
+    font-size: 70pt;
+    text-align: center;
+    padding-right: 38px;
+    box-sizing: border-box;
+}
+
+.twentieth-logo {
+    height: 200px;
+    width: 400px;
+    margin-left: 500px;
+    margin-top: 90px;
+}
+
+.twentieth-logo > img {
+    width: 400px;
+}
+
+.player-swap {
+    background-image: url("/bundles/mgsr-unmetal-unleashed/graphics/img/tanker-elimination-swap.gif");
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    z-index: -100;
+}
+
+.player-swap.show {
+    display: inline;
+}
+
+.featured-player .player-swap {
+    background-size: 1024px;
+    animation: player-swap-featured 6s ease-in-out;
+}
+
+.small-player .player-swap {
+    background-size: 384px;
+    animation: player-swap-small 6s ease-in-out;
+}
+
+.hide-text {
+    animation: ease-in-out hide-text 1.5s forwards;
+}
+
+.show-text {
+    animation: ease-in-out show-text 1.5s forwards;
+}
+
+@keyframes slide_down {
+    from {
+        width: 0;
+        transform: translateY(-216px);
+    }
+
+    33% {
+        width: 100%;
+        transform: translateY(-216px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide_up {
+    from {
+        transform: translateY(0);
+    }
+
+    75% {
+        transform: translateY(-216px);
+        width: 100%;
+    }
+
+    to {
+        transform: translateY(-216px);
+        width: 0;
+    }
+}
+
+@keyframes slide_along_up {
+    from {
+        background-color: rgba(0, 0 ,0, 0);
+        height: 266px;
+    }
+    33% {
+        background-color: rgba(0, 0 ,0, 100);
+        height: 266px;
+    }
+
+    80% {
+        width: 100%;
+        height: 50px;
+    }
+    to {
+        background-color: rgba(0, 0 ,0, 100);
+        width: 0;
+        height: 50px;
+    }
+}
+
+@keyframes slide_along_down {
+    from {
+        background-color: rgba(0, 0 ,0, 100);
+        height: 0;
+    }
+    40% {
+        height: 216px;
+    }
+    70% {
+        background-color: rgba(0, 0 ,0, 50);
+    }
+
+    to {
+        background-color: rgba(0, 0 ,0, 0);
+    }
+}
+
+@keyframes show-and-hide {
+    from {
+        opacity: 0;
+    }
+
+    3.75% {
+        opacity: 1;
+    }
+
+    21.25% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes player-swap-featured {
+    from {
+        transform: translateY(576px);
+    }
+
+    25% {
+        transform: translateY(0px);
+    }
+
+    75% {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(576px);
+    }
+}
+
+@keyframes player-swap-small {
+    from {
+        transform: translateY(216px);
+    }
+
+    25% {
+        transform: translateY(0px);
+    }
+
+    75% {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(216px);
+    }
+}
+
+@keyframes hide-text {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes show-text {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+    from {
+        color: white;
+    }
+
+    0.5% {
+        color: #9f1311;
+    }
+
+    1% {
+        color: white;
+    }
+
+    1.5% {
+        color: #9f1311;
+    }
+
+    2% {
+        color: white;
+    }
+
+    to {
+        color: white;
+    }
+}
+
+@keyframes display-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes hide-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
