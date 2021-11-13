@@ -46,7 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 sourceSelection.innerHTML = "";
                 const options = createMediaSourceOptions(i, data);
                 for (let id in options) {
-                    sourceSelection.appendChild(options[id])
+                    sourceSelection.append(options[id])
                 }
             }
             //updateReplicant();
@@ -222,11 +222,13 @@ window.addEventListener('DOMContentLoaded', () => {
         const options = [];
         console.log(data);
         for (let dataID in data) {
-            const sourceName = data[dataID];
+            const sourceName = data[dataID].sourceName;
             const option = document.createElement("option");
             option.value = sourceName;
             option.innerHTML = sourceName;
-            if (RTMPSettingsDataReplicant.value !== undefined && RTMPSettingsDataReplicant.value[id] !== undefined && sourceName == RTMPSettingsDataReplicant.value[id].sourceName) {
+            console.log(sourceName);
+            console.log(RTMPSettingsDataReplicant.value[id].sourceName);
+            if (RTMPSettingsDataReplicant.value !== undefined && RTMPSettingsDataReplicant.value[id] !== undefined && sourceName === RTMPSettingsDataReplicant.value[id].sourceName) {
                 option.selected = true;
             }
 
