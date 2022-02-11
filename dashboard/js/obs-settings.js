@@ -192,7 +192,7 @@ window.addEventListener('DOMContentLoaded', () => {
         label.setAttribute("class", "rtmp");
         const select = document.createElement("select")
         select.setAttribute("id", id);
-        const regions = ["NA", "EU", "SGP", "OCE"];
+        const regions = ["NYC", "SFO", "TOR", "AMS", "SGP", "LON", "FRA", "BLR"];
 
         for (let i = 0; i < regions.length; i++) {
             const option = document.createElement("option");

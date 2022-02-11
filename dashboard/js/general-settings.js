@@ -62,10 +62,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     const regions = {
-        "NA": "rtmp",
-        "EU": "eu-rtmp",
+        "NYC": "nyc-rtmp",
+        "SFO": "sfo-rtmp",
+        "TOR": "tor-rtmp",
+        "AMS": "ams-rtmp",
         "SGP": "sgp-rtmp",
-        "OCE": "oce-rtmp"
+        "LON": "lon-rtmp",
+        "FRA": "fra-rtmp",
+        "BLR": "blr-rtmp",
     }
 
     const rtmpHost = "metalgearspeedrunners.com";
