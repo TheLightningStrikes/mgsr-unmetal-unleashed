@@ -62,6 +62,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     const regions = {
+        "RIC": "ric-rtmp",
         "NYC": "nyc-rtmp",
         "SFO": "sfo-rtmp",
         "TOR": "tor-rtmp",
